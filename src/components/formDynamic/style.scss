@@ -1,0 +1,390 @@
+.formCard {
+  border-radius: 24px;
+  background: linear-gradient(
+    221deg,
+    rgba(255, 255, 255, 0.3) 15.72%,
+    rgba(255, 255, 255, 0.6) 58.77%,
+    rgba(255, 255, 255, 0.3) 95.04%
+  );
+  background-blend-mode: overlay, normal;
+  box-shadow: 0px 0px 14px 2px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(35px);
+  padding: 32px 16px;
+}
+
+.form-label {
+  font-family: Onest !important;
+  color: var(--colorBlack) !important;
+  font-size: 16px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: normal !important;
+  margin-bottom: 8px !important;
+  border: 1.72px solid;
+  border-image-source: linear-gradient(
+    108.37deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+}
+
+.form-error {
+  color: var(--colorFuxia);
+  font-family: Onest !important;
+  font-size: 11px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: normal !important;
+  margin-top: 5px !important;
+  border-image-source: linear-gradient(
+    108.37deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+}
+
+.form-forget-password {
+  text-decoration: none;
+  color: var(--colorWhite);
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  p {
+    color: var(--colorWhite);
+    font-family: Onest !important;
+    font-size: 14px !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    line-height: normal !important;
+    margin: 8px 0 !important;
+  }
+}
+
+.form-title {
+  color: var(--colorBlack);
+  font-family: Onest !important;
+  font-size: 20px !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  line-height: normal !important;
+}
+.inputDate {
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0.4) 0.04%,
+    rgba(255, 255, 255, 0.2) 51.71%,
+    rgba(255, 255, 255, 0.3) 99.96%
+  ) !important;
+  box-shadow: 0px 0px 8.18px 0px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 8px !important;
+  backdrop-filter: blur(30px) !important;
+  div {
+    height: 45px !important;
+    font-family: Onest;
+    fieldset {
+      display: none;
+    }
+  }
+}
+.select {
+  fieldset {
+    display: none;
+  }
+  div {
+    div {
+      padding: 0px !important;
+    }
+  }
+}
+.input {
+  height: 45px !important;
+  font-family: Onest;
+  border-radius: 8px !important;
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0.4) 0.04%,
+    rgba(255, 255, 255, 0.2) 51.71%,
+    rgba(255, 255, 255, 0.3) 99.96%
+  ) !important;
+  box-shadow: 0px 0px 8.18px 0px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(30px) !important;
+
+  input:-webkit-autofill {
+    -webkit-text-fill-color: var(--colorBlack) !important;
+    font-family: Onest !important;
+  }
+  input {
+    border-radius: 8px;
+    height: 45px;
+    padding: 0px 15px;
+    font-family: Onest;
+  }
+  &::before {
+    border-bottom: none !important;
+  }
+  &::after {
+    border-bottom: none !important;
+  }
+}
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.input-textarea {
+  fieldset {
+    display: none;
+  }
+  border-radius: 8px !important;
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0.4) 0.04%,
+    rgba(255, 255, 255, 0.2) 51.71%,
+    rgba(255, 255, 255, 0.3) 99.96%
+  ) !important;
+  box-shadow: 0px 0px 8.18px 0px rgba(89, 71, 255, 0.05) !important;
+  backdrop-filter: blur(30px) !important;
+  div {
+    textarea {
+      color: #a1a1a1 !important;
+    }
+  }
+}
+
+.radioGroup {
+  span:hover {
+    background-color: transparent;
+    span {
+      background-color: transparent;
+    }
+  }
+}
+
+.GridContainerCheckList {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 8px;
+  margin: 8px;
+  scrollbar-color: var(--colorIndigo) transparent;
+  scrollbar-width: thin;
+}
+
+.checkbox_list {
+  border-radius: 8px;
+  margin: 0px !important;
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0.4) 0.04%,
+    rgba(255, 255, 255, 0.2) 51.71%,
+    rgba(255, 255, 255, 0.3) 99.96%
+  ) !important;
+  backdrop-filter: blur(30px) !important;
+
+  .MuiTypography-root {
+    font-family: Onest;
+    font-size: 12.8px;
+    color: var(--colorBlack);
+  }
+}
+
+.descriptionCheckList {
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 1.72px solid rgba(255, 255, 255, 0.5);
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0.4) 0.04%,
+    rgba(255, 255, 255, 0.2) 51.71%,
+    rgba(255, 255, 255, 0.3) 99.96%
+  );
+  box-shadow: 0px 0px 8.18px 0px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(30px);
+  height: 220px;
+  max-height: 220px;
+  min-height: 100px;
+  overflow-y: auto;
+  p:first-child {
+    font-family: Onest-Bold;
+    color: var(--colorBlack);
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  p:last-child {
+    font-family: Onest;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 123%;
+    color: #a1a1a1;
+  }
+}
+.radioGroup {
+  gap: 15px;
+  label {
+    span:last-child {
+      font-family: Onest;
+    }
+  }
+}
+// SECCION DE TITULO
+.section {
+  .title {
+    color: var(--colorBlack);
+    font-family: Onest;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 123%; /* 24.6px */
+  }
+  .description {
+    width: 100%;
+    color: var(--colorGrey);
+    border-bottom: 1px solid var(--colorGrey);
+    padding: 8px 0;
+  }
+}
+
+// Estilos para campos deshabilitados
+.input:disabled,
+.input.Mui-disabled {
+  background: linear-gradient(
+    108deg,
+    rgba(235, 233, 233, 0.3) 0.04%,
+    rgba(197, 195, 195, 0.2) 51.71%,
+    rgba(210, 209, 209, 0.25) 99.96%
+  ) !important;
+
+  input {
+    cursor: not-allowed !important;
+  }
+}
+
+// Estilos para textarea deshabilitado
+.input-textarea:disabled,
+.input-textarea.Mui-disabled {
+  background: linear-gradient(
+    108deg,
+    rgba(235, 233, 233, 0.3) 0.04%,
+    rgba(197, 195, 195, 0.2) 51.71%,
+    rgba(210, 209, 209, 0.25) 99.96%
+  ) !important;
+}
+
+// Estilos para select deshabilitado
+.select.Mui-disabled {
+  .input {
+    background: linear-gradient(
+      108deg,
+      rgba(235, 233, 233, 0.3) 0.04%,
+      rgba(197, 195, 195, 0.2) 51.71%,
+      rgba(210, 209, 209, 0.25) 99.96%
+    ) !important;
+    box-shadow: 0 0 8.18px 0 rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(30px);
+
+    div {
+      color: #888888 !important;
+    }
+  }
+}
+
+// Estilos para checkbox list deshabilitado
+.checkbox_list.disabled {
+  background: linear-gradient(
+    108deg,
+    rgba(235, 233, 233, 0.3) 0.04%,
+    rgba(197, 195, 195, 0.2) 51.71%,
+    rgba(210, 209, 209, 0.25) 99.96%
+  ) !important;
+
+  .MuiTypography-root {
+    color: #888888 !important;
+  }
+
+  .MuiCheckbox-root {
+    color: #999999 !important;
+    cursor: not-allowed !important;
+  }
+}
+
+// Estilos para radio buttons deshabilitados
+.radioGroup.disabled {
+  opacity: 0.6 !important;
+
+  label {
+    cursor: not-allowed !important;
+
+    span {
+      color: #888888 !important;
+    }
+
+    .MuiRadio-root {
+      color: #999999 !important;
+    }
+  }
+}
+
+// Estilos para labels de campos deshabilitados
+.form-label.disabled {
+  color: #888888 !important;
+  opacity: 0.7 !important;
+}
+
+// Estilos para TextEditor deshabilitado
+.editorContainer.disabled {
+  background: linear-gradient(
+    108deg,
+    rgba(235, 233, 233, 0.3) 0.04%,
+    rgba(197, 195, 195, 0.2) 51.71%,
+    rgba(210, 209, 209, 0.25) 99.96%
+  ) !important;
+  border-radius: 8px !important;
+
+  .ProseMirror {
+    color: #888888 !important;
+    cursor: not-allowed !important;
+
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    ul,
+    ol,
+    li {
+      color: #888888 !important;
+    }
+
+    &::before {
+      color: #999999 !important;
+    }
+  }
+
+  .toolbar {
+    button {
+      color: #999999 !important;
+      cursor: not-allowed !important;
+      pointer-events: none !important;
+
+      &:hover {
+        color: #999999 !important;
+      }
+
+      svg path {
+        stroke: #999999 !important;
+      }
+    }
+  }
+
+  .charCount {
+    color: #999999 !important;
+  }
+}

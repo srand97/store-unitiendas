@@ -1,0 +1,54 @@
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--colorRed);
+  padding: 1rem 2rem;
+  border-radius: 0px 0px 20px 20px;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    a {
+      text-decoration: none;
+      color: var(--colorWhite);
+    }
+  }
+  .searchRegisterLogin {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    div {
+      display: flex;
+      align-items: center;
+      #login {
+        color: var(--colorWhite);
+        text-decoration-color: var(--colorWhite);
+      }
+      #register {
+        border: 2px solid var(--colorWhite);
+        padding: 0.3rem 0.5rem;
+        border-radius: 20px;
+        color: var(--colorWhite);
+        text-decoration: none;
+        cursor: pointer;
+      }
+    }
+    #contact {
+      background-color: var(--colorWhite);
+      color: var(--colorBlack);
+      text-decoration: none;
+      padding: 0.3rem 0.5rem;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+}

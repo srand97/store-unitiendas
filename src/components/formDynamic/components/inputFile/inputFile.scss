@@ -1,0 +1,38 @@
+.btnFile {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding: 20px !important;
+  background: var(--backgroundGlass) !important;
+  border-radius: 12px !important;
+  gap: 5px;
+  p {
+    text-transform: none;
+    color: var(--colorBlack);
+    span {
+      color: var(--colorIndigo);
+    }
+  }
+}
+.fileItem {
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 5px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px 0px !important;
+  .boxItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .size {
+      color: var(--colorIndigo);
+    }
+    .type {
+      text-transform: uppercase;
+    }
+  }
+}

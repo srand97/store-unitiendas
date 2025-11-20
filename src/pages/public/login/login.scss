@@ -1,0 +1,29 @@
+.containerLogin {
+  margin: 4rem 5rem;
+  padding: 0rem 5rem;
+  background-color: var(--colorBlueLight) !important;
+  height: auto;
+  border-radius: 25px 0 25px 0;
+  position: relative;
+  grid-area: containerLogin;
+  background-color: pink;
+
+  .containerLogin__grid {
+    height: auto;
+    display: flex;
+    align-items: center;
+    .gridChildren{
+      display: flex;
+      justify-content: center;
+      #logoSmall{
+        max-width: 250px;
+      }
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .containerLogin {
+    padding: 0rem 1rem;
+  }
+}

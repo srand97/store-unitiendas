@@ -1,0 +1,35 @@
+.headerLogin {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--colorRed);
+  padding: 1rem 2rem;
+  border-radius: 0px 0px 20px 20px;
+  grid-area: headerLogin;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    cursor: pointer;
+    p {
+      text-decoration: none;
+      color: var(--colorWhite);
+    }
+  }
+  .menuLogin {
+    display: flex;
+    align-items: center;
+    #contact {
+      background-color: var(--colorWhite);
+      color: var(--colorBlack);
+      text-decoration: none;
+      padding: 0.3rem 0.5rem;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+}

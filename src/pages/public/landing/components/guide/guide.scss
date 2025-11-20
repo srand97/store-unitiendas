@@ -1,0 +1,48 @@
+.Guide__container {
+  width: 35%;
+  .title {
+    font-family: "Onest-Bold";
+    margin-bottom: 1rem !important;
+  }
+  .text {
+    font-family: "Onest";
+    margin-bottom: 1rem !important;
+  }
+}
+.Guide__grid {
+  width: 100%;
+  .title {
+    font-family: "Onest-SemiBold";
+    margin-bottom: 2rem !important;
+  }
+  .description {
+    font-family: "Onest";
+  }
+}
+
+.Guide__line {
+  height: 8px;
+  width: 100%;
+  background-color: var(--colorRed);
+  animation: Guide__line 10s infinite;
+  margin: 8rem 0 4rem 0;
+  border-radius: 10px;
+}
+
+@keyframes Guide__line {
+  0% {
+    width: 0%;
+  }
+  25% {
+    width: 25%;
+  }
+  50% {
+    width: 50%;
+  }
+  75% {
+    width: 75%;
+  }
+  100% {
+    width: 100%;
+  }
+}

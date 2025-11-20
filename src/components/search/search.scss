@@ -1,0 +1,19 @@
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--colorWhite);
+  border-radius: 20px;
+  padding: 0.3rem 0.5rem;
+  input {
+    text-align: end;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 16px;
+    color: #a5bec3;
+  }
+  input::placeholder {
+    color: #a5bec3;
+  }
+}

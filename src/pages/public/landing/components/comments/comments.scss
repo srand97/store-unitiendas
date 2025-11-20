@@ -1,0 +1,26 @@
+.Comments__container {
+  padding: 2rem;
+}
+.Comments__box {
+  background-color: var(--colorBlueLight);
+  width: 100%;
+  height: 100%;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  border-radius: 25px;
+}
+.Comments__boxs {
+  background-color: var(--colorWhite);
+  border: 1px solid var(--colorBlueLight);
+  width: 100%;
+  height: 100%;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  border-radius: 25px;
+}

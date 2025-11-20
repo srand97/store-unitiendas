@@ -1,0 +1,54 @@
+.notFoundContainer {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  width: 100%;
+
+  .notFoundContent {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+    gap: 32px;
+
+    .notFoundTitle {
+      color: var(--colorBlack);
+      text-align: center;
+      font-family: Onest;
+      font-size: 48.83px;
+      font-style: normal;
+      line-height: 123%;
+    }
+
+    .notFoundSubtitle {
+      color: var(--colorRed);
+      text-align: center;
+      font-family: Onest-Bold;
+      font-size: 40px;
+      font-style: normal;
+      line-height: 123%;
+    }
+
+    .notFoundDescription {
+      color: var(--colorBlack);
+      text-align: center;
+      font-family: Onest-SemiBold;
+      font-size: 25px;
+      font-style: normal;
+      line-height: 123%;
+    }
+
+    .notFoundButton {
+      svg {
+        transform: rotate(-90deg);
+      }
+    }
+  }  
+}

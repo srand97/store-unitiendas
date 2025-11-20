@@ -1,0 +1,27 @@
+.AboutMe__container {
+  width: 35%;
+  .title {
+    font-family: "Onest-Bold";
+    margin-bottom: 1rem !important;
+  }
+  .description {
+    font-family: "Onest-SemiBold";
+    margin-bottom: 1rem !important;
+  }
+  .text {
+    font-family: "Onest";
+    margin-bottom: 1rem !important;
+  }
+}
+.AboutMe__grid {
+  width: 100%;
+  padding: 8rem 0 0 0;
+  .title {
+    font-family: "Onest-SemiBold";
+    margin-bottom: 0.2rem !important;
+  }
+  .description {
+    font-family: "Onest";
+    margin-bottom: 1rem !important;
+  }
+}
