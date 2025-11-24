@@ -46,6 +46,7 @@
   --colorBlueLight: #eef2f3;
   /* COLOR GRIS */
   --colorGray: #e8e4e3;
+  --colorGrayDark: #515151;
 }
 * {
   margin: 0;
@@ -64,6 +65,8 @@ body {
   height: 100%;
   font-family: Onest !important;
   margin: 0;
+  overflow: auto !important;
+  padding-right: 0 !important;
 }
 
 #root {
@@ -136,6 +139,7 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+
 /* 35px */
 .size35 {
   font-size: clamp(20px, 2dvw, 35px) !important;
@@ -147,7 +151,7 @@ body {
 }
 /* 30px */
 .size30 {
-  font-size: clamp(15px, 2dvw, 30px) !important;
+  font-size: clamp(15px, 2dvw, 25px) !important;
   font-style: normal;
   -webkit-user-select: none;
   -moz-user-select: none;

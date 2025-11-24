@@ -1,0 +1,22 @@
+.btns {
+  width: -webkit-fill-available;
+  display: flex;
+  gap: 10px;
+  .btnView {
+    width: -webkit-fill-available;
+    background-color: var(--colorRed);
+    color: #fff;
+    padding: 0px 10px !important;
+    height: 40px;
+    border-radius: 25px !important;
+    display: flex;
+    justify-content: flex-start !important;
+  }
+  .btnBuy {
+    background-color: var(--colorGrayDark);
+    color: #fff;
+    padding: 0px 10px !important;
+    height: 40px;
+    border-radius: 50% !important;
+  }
+}

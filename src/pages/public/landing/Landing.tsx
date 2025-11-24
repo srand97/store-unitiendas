@@ -1,8 +1,6 @@
-import Footer from "@/layouts/landingLayout/footer/Footer";
 import { Box, Grid, Typography } from "@mui/material";
 
 //IMPORTADOS
-import Header from "@/layouts/landingLayout/header/Header";
 import Carousel from "@/components/carousel/Carousel";
 import { ArrImages } from "./utils/utils";
 import AboutMe from "./components/aboutMe/AboutMe";
@@ -27,16 +25,15 @@ const items = [
 const Landing = () => {
   return (
     <Box className="containerLanding">
-      {/* HEADER */}
-      <Header />
-
       {/* CAROUSEL */}
-      <Carousel
-        images={ArrImages}
-        width={"100%"}
-        height={"90vh"}
-        borderRadius={"0px 0px 20px 20px"}
-      />
+      <Box mt={-2}>
+        <Carousel
+          images={ArrImages}
+          width={"100%"}
+          height={"90vh"}
+          borderRadius={"0px 0px 20px 20px"}
+        />
+      </Box>
 
       <Grid
         container
@@ -70,7 +67,7 @@ const Landing = () => {
       <Box className="containerOurProducts">
         <OurProducts />
       </Box>
-      
+
       {/* SUPPLIERS (Provedores) */}
       <Box className="containerContactUs">
         <ContactUs />
@@ -85,9 +82,6 @@ const Landing = () => {
       <Box className="containerComments">
         <Comments />
       </Box>
-
-      {/* FOOTER */}
-      <Footer />
     </Box>
   );
 };

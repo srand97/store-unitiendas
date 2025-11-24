@@ -8,12 +8,30 @@ import { useAlertStore } from "@/store/alertStore";
 import { useLogin } from "../hook/useLogin";
 import { state } from "../Login";
 import "./formAuth.scss";
-import { useFetchSelects } from "../hook/useFetchSelects";
-import { ENDPOINTS } from "@/utils/endpoints";
+// import { useFetchSelects } from "../hook/useFetchSelects";
+// import { ENDPOINTS } from "@/utils/endpoints";
 
 interface FormRegisterProps {
   setActions: (value: state) => void;
 }
+
+export const identificationTypes = [
+  {
+    id: 1,
+    label: "Cédula de ciudadanía",
+    value: "CC",
+  },
+  {
+    id: 2,
+    label: "Cédula de extranjería",
+    value: "CE",
+  },
+  {
+    id: 3,
+    label: "Pasaporte",
+    value: "PP",
+  },
+];
 
 interface RegisterFormData {
   name: string;
@@ -38,15 +56,15 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
     mode: "onChange",
   });
 
-  const { list: identificationTypes } = useFetchSelects({
-    endpoint: ENDPOINTS.utils.identification_type,
-    transformData: (data) =>
-      data?.map((item) => ({
-        id: item.id,
-        label: item.name,
-        value: item.code,
-      })),
-  });
+  // const { list: identificationTypes } = useFetchSelects({
+  //   endpoint: ENDPOINTS.utils.identification_type,
+  //   transformData: (data) =>
+  //     data?.map((item) => ({
+  //       id: item.id,
+  //       label: item.name,
+  //       value: item.code,
+  //     })),
+  // });
 
   const [step, setStep] = useState<number>(1);
 

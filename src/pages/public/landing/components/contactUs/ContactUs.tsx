@@ -41,7 +41,7 @@ const ContactUs = () => {
       </Grid>
 
       {/* MODAL PRE_REGISTRO */}
-      <Modal isOpen={stateModal} onClose={() => setStateModal(false)}>
+      <Modal isOpen={stateModal} onClose={() => setStateModal(false)} width={900}>
         <PreRegistration />
       </Modal>
     </Box>

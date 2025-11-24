@@ -14,8 +14,8 @@ export default function Modal({
   isOpen,
   onClose,
   children,
-  width = 400,
-  height = 200,
+  width = "auto",
+  height = "auto",
   isClickOverOut = false
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);

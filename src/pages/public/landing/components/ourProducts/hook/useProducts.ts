@@ -1,13 +1,13 @@
 import { useFetch } from "@/hooks/useFetch";
 import { ENDPOINTS } from "@/utils/endpoints";
 import { useCallback, useEffect, useState } from "react";
-import { responseProducts } from "../types/typesProducts";
+import { ResponseProducts } from "../types/typesProducts";
 import { useAlertStore } from "@/store/alertStore";
 
 export const useProducts = () => {
   const { fetchData } = useFetch();
   const { showAlert } = useAlertStore();
-  const [listProducts, setListProducts] = useState<responseProducts>();
+  const [listProducts, setListProducts] = useState<ResponseProducts>();
 
   const getProducts = useCallback(async () => {
     const response = await fetchData({

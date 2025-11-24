@@ -1,21 +1,26 @@
 import { Box, Typography } from "@mui/material";
 import CustomImage from "@/components/customImage/CustomImage";
-import pastillas from "@/assets/images/pastillas.jpg"
 
 interface CardProductProps {
   image?: string;
-  title: string;
+  title?: string;
 }
 
-const CardProducts = ({ title }: CardProductProps) => {
+const CardCategory = ({ title, image }: CardProductProps) => {
   return (
     <Box
       sx={{
         position: "relative",
-        // minHeight: "250px",
       }}
     >
-      <CustomImage src={pastillas} alt={title} radius="25px" width="100%" height="100%" />
+      <CustomImage
+        src={image}
+        alt={title}
+        radius="25px"
+        width="100%"
+        height="100%"
+        minHeight="200px"
+      />
       <Box
         sx={{
           width: "100%",
@@ -45,4 +50,4 @@ const CardProducts = ({ title }: CardProductProps) => {
   );
 };
 
-export default CardProducts;
+export default CardCategory;
