@@ -37,11 +37,11 @@ const AppRoutes = () => {
       children: [
         // HOME
         {
-          path: "inicio",
+          path: "/inicio",
           element: <Landing />,
         },
         {
-          path: "productos",
+          path: "/productos",
           element: <Products />,
         },
       ],
