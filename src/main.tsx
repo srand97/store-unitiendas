@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
 //IMPORTADOS
-import './index.css'
+import './index.scss'
 import App from './App.tsx'
 import Alerts from './services/alerts/Alerts.tsx';
 

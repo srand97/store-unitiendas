@@ -49,12 +49,10 @@ export const getValueByPath = ( obj: any, path:string)=>{
   if(!path) return "";
   if(path?.includes(".")){
     try {
-      // Normalizamos los corchetes: user.addresses[0].city -> user.addresses.0.city
-      // const normalizedPath = path.replace(/\[(\d+)\]/g, ".$1");
       const value = path
         .split('.')
         .reduce((acc, key) => {
-          if (acc && acc[key] == null) return undefined; // si es null o undefined, corta
+          if (acc && acc[key] == null) return undefined;
           return acc?.[key];  
         } , obj)
       if (value == null) return "";

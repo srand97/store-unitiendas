@@ -1,0 +1,46 @@
+.info-product {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+
+  .category-product {
+    color: var(--colorGrayDark);
+    font-family: "Onest-SemiBold";
+  }
+  .name-product {
+    font-family: "Onest-Bold";
+    font-size: 28px;
+  }
+  .description-product {
+    margin-top: 10px;
+    font-size: 14px;
+    font-family: "Onest";
+  }
+  .stock-product {
+    margin: 10px 0px;
+    p {
+      font-size: 14px;
+      color: var(--colorRed);
+    }
+  }
+  .weight-product,
+  .count-product {
+    font-family: "Onest";
+    color: var(--colorGrayDark);
+  }
+}
+
+.grid-califications {
+  background-color: var(--colorBlueLight);
+  padding: 15px;
+  border-radius: 15px;
+  .box-califications {
+    width: 100%;
+    display: flex;
+    gap: 50px;
+    margin: 12px 0;
+    align-items: center;
+  }
+}

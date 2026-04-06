@@ -5,12 +5,11 @@ import { Box, Input, Link, Typography } from "@mui/material";
 import { MainButton } from "@/components/mainButton/MainButton";
 import "./formAuth.scss";
 import { useForm } from "react-hook-form";
-// import { useLogin } from "../hook/useLogin";
+import { useLogin } from "../hook/useLogin";
 import { useAuthStore } from "@/store/authStore";
-// import { User } from "@/interfaces/user";
-// import { useAlertStore } from "@/store/alertStore";
+import { User } from "@/interfaces/user";
+import { useAlertStore } from "@/store/alertStore";
 import { state } from "../Login";
-import { useState } from "react";
 
 interface FormAuthProps {
   setActions: (value: state) => void;
@@ -31,48 +30,30 @@ const FormAuth = ({ setActions }: FormAuthProps) => {
     mode: "onChange",
   });
 
-  // const { login, loading } = useLogin();
-  // const { showAlert } = useAlertStore();
+  const { login, loading } = useLogin();
+  const { showAlert } = useAlertStore();
   const { login: loginStore } = useAuthStore();
-  const [loading, setLoading] = useState(false);
 
   const handleRegisterClick = () => {
     setActions("register");
   };
 
-  // const onSubmit = async (data: AuthFormData) => {
-  //   const isValid = await trigger(["username", "password"]);
-  //   if (isValid) {
-  //     const response = await login(data);
-  //     if (response?.success) {
-  //       const user: User = response.data;
-  //       loginStore(user);
-  //     } else {
-  //       showAlert({
-  //         type: "error",
-  //         title: "Error",
-  //         message: response?.message || "Error al iniciar sesión",
-  //         duration: 10000,
-  //       });
-  //     }
-  //   }
-  // };
-  const onSubmit = async () => {
-    setLoading(true);
+  const onSubmit = async (data: AuthFormData) => {
     const isValid = await trigger(["username", "password"]);
-    setTimeout(() => {
-      if (isValid) {
-        const response = {
-          success: true,
-          token: true,
-        };
-        if (response?.success) {
-          const user: any = response;
-          loginStore(user);
-        }
+    if (isValid) {
+      const response = await login(data);
+      if (response?.success) {
+        const user: User = response.data;
+        loginStore(user);
+      } else {
+        showAlert({
+          type: "error",
+          title: "Error",
+          message: response?.message || "Error al iniciar sesión",
+          duration: 10000,
+        });
       }
-      setLoading(false);
-    }, 1000);
+    }
   };
 
   return (

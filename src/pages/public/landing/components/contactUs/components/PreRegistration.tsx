@@ -1,10 +1,11 @@
 import { MainButton } from "@/components/mainButton/MainButton";
-import { identificationTypes } from "@/pages/public/login/components/FormRegister";
 import { Box, Input, MenuItem, Select, Typography } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { Fragment } from "react/jsx-runtime";
 // IMPORTADOS
 import redLogo from "@/assets/images/redLogo.png";
+import { ENDPOINTS } from "@/utils/endpoints";
+import { useFetchSelects } from "@/pages/public/login/hook/useFetchSelects";
 interface RegisterFormData {
   name: string;
   last_name: string;
@@ -17,6 +18,15 @@ interface RegisterFormData {
 }
 
 const PreRegistration = () => {
+  const { list: identificationTypes } = useFetchSelects({
+    endpoint: ENDPOINTS.utils.identification_type,
+    transformData: (data) =>
+      data?.map((item) => ({
+        id: item?.id,
+        label: item?.name,
+        value: item?.code,
+      })),
+  });
   const {
     register,
     handleSubmit,

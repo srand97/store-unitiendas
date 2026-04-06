@@ -16,10 +16,11 @@ const CardCategory = ({ title, image }: CardProductProps) => {
       <CustomImage
         src={image}
         alt={title}
-        radius="25px"
         width="100%"
-        height="100%"
-        minHeight="200px"
+        height={160}
+        radius="25px"
+        objectFit="cover"
+        fallbackText="Sin imagen"
       />
       <Box
         sx={{

@@ -6,25 +6,37 @@ import { ProductsData } from "../../landing/components/ourProducts/types/typesPr
 import "./cardProducts.scss";
 import IconShop from "@/assets/icon/IconShop";
 
-const CardProducts = (products: ProductsData) => {
+interface ICardProduct {
+  products: ProductsData;
+  onClick: () => void;
+}
+
+const CardProducts = ({ products, onClick }: ICardProduct) => {
   return (
     <Box className="card-product">
-      {products.new && <Box className="label">Nuevo</Box>}
-      <Box>
-        <CustomImage src={products.image} height={250} width={250} radius="10px" />
+      {products?.is_new && <Box className="label">Nuevo</Box>}
+      <Box width={"-webkit-fill-available"}>
+        <CustomImage
+          src={products?.image}
+          alt={products?.name}
+          height={200}
+          width={"auto"}
+          radius="10px"
+          fallbackText="Imagen no disponible"
+        />
       </Box>
       <Box className="box-info-products">
-        <Typography className="size16 fontOnestBold">{products.name}</Typography>
-        <span className="size14 fontOnestLight">{products.weight}</span>
+        <Typography className="size16 fontOnestBold">{products?.name}</Typography>
+        <span className="size14 fontOnestLight">{`${products?.quantity}  ${products?.unit}`}</span>
         <Typography className="size16 fontOnestBold" mt={2} gap={2} display={"flex"}>
-          ${products.unit_price_discount}{" "}
+          ${products?.unit_price_discount}
           <span style={{ color: "#A5BEC3", textDecoration: "line-through" }}>
-            ${products.normal_unit_price}
+            ${products?.normal_unit_price}
           </span>
         </Typography>
       </Box>
       <Box className="btns">
-        <MainButton className="btnView" text="Ver producto" />
+        <MainButton className="btnView" text="Ver producto" onClick={onClick} />
         <MainButton
           iconLeft={<IconShop height={20} width={20} color="#fff" />}
           className="btnBuy"

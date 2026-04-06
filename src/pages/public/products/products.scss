@@ -1,16 +1,11 @@
 .grid-category {
   margin-top: 1rem;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
 
   .box-category-round {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-
     p {
       text-align: center;
       width: 100%;
@@ -22,7 +17,6 @@
 .grid-products {
   margin-top: 1rem;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
 
   .card-product {
@@ -36,7 +30,7 @@
     border: 1px solid var(--colorGray);
     padding: 12px;
     border-radius: 15px;
-
+    width: auto;
     .label {
       position: absolute;
       background-color: var(--colorRed);
@@ -54,8 +48,6 @@
 /* Tablet Styles */
 @media (min-width: 481px) {
   .grid-category {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;
     margin-top: 1.5rem;
 
     .box-category-round {
@@ -68,7 +60,6 @@
   }
 
   .grid-products {
-    grid-template-columns: repeat(3, 1fr);
     gap: 0.75rem;
     margin-top: 1.5rem;
 
@@ -90,13 +81,10 @@
 /* Desktop Styles */
 @media (min-width: 769px) {
   .grid-category {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.875rem;
     margin-top: 2rem;
   }
 
   .grid-products {
-    grid-template-columns: repeat(4, 1fr);
     gap: 0.875rem;
     margin-top: 2rem;
 
@@ -117,13 +105,7 @@
 
 /* Large Desktop Styles */
 @media (min-width: 1025px) {
-  .grid-category {
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1rem;
-  }
-
   .grid-products {
-    grid-template-columns: repeat(6, 1fr);
     gap: 1rem;
 
     .card-product {
@@ -137,5 +119,27 @@
         font-size: 1rem;
       }
     }
+  }
+}
+
+
+// Smooth skeleton animations
+.MuiSkeleton-root {
+  transform: scale(1);
+  
+  &::after {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
   }
 }

@@ -34,11 +34,12 @@ export const listProducts = {
           name: "Paracetamol",
           description: "Analgésico y antipirético para el alivio del dolor y la fiebre",
           image: pastillaUno,
+          calification: 2,
           stock: 50,
           normal_unit_price: "10.00",
           unit_price_discount: "8.50",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "500mg",
+          weight: "500 mg",
           brand: {
             id: "brand_generic",
             code: "BG001",
@@ -56,13 +57,15 @@ export const listProducts = {
           is_active: true,
           code: "MED002",
           name: "Ibuprofeno",
-          description: "Antiinflamatorio no esteroideo para dolor e inflamación",
+          description:
+            "El ibuprofeno es un derivado del ácido propiónico con propiedades analgésicas (alivia el dolor), antiinflamatorias (reduce la inflamación) y antipiréticas (baja la fiebre) . Su mecanismo de acción principal consiste en inhibir la síntesis de prostaglandinas a nivel periférico . Las prostaglandinas son sustancias químicas que produce el cuerpo y que están asociadas a la sensación de dolor, la respuesta inflamatoria (enrojecimiento, hinchazón) y la aparición de fiebre. Al bloquear su producción, el ibuprofeno consigue aliviar estos síntomas",
           image: pastillaDos,
+          calification: 2,
           stock: 30,
           normal_unit_price: "14.00",
           unit_price_discount: "12.00",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "400mg",
+          weight: "400 mg",
           brand: {
             id: "brand_generic",
             code: "BG001",
@@ -86,7 +89,7 @@ export const listProducts = {
           normal_unit_price: "18.50",
           unit_price_discount: "15.75",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "500mg",
+          weight: "500 mg",
           brand: {
             id: "brand_bayer",
             code: "BB001",
@@ -119,7 +122,7 @@ export const listProducts = {
           normal_unit_price: "4.20",
           unit_price_discount: "3.50",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "1kg",
+          weight: "1000 gr",
           brand: {
             id: "brand_fresco",
             code: "BF001",
@@ -143,7 +146,7 @@ export const listProducts = {
           normal_unit_price: "3.20",
           unit_price_discount: "2.80",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "manojo",
+          weight: "1000 gr",
           brand: {
             id: "brand_tropical",
             code: "BT001",
@@ -167,7 +170,7 @@ export const listProducts = {
           normal_unit_price: "2.30",
           unit_price_discount: "1.90",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "1kg",
+          weight: "1000 gr",
           brand: {
             id: "brand_huerta",
             code: "BH001",
@@ -191,7 +194,7 @@ export const listProducts = {
           normal_unit_price: "2.80",
           unit_price_discount: "2.20",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "unidad",
+          weight: "Unidad",
           brand: {
             id: "brand_verde",
             code: "BV001",
@@ -224,7 +227,7 @@ export const listProducts = {
           normal_unit_price: "14.50",
           unit_price_discount: "12.90",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "1kg",
+          weight: "1000 gr",
           brand: {
             id: "brand_avicola",
             code: "BA001",
@@ -247,7 +250,7 @@ export const listProducts = {
           normal_unit_price: "17.80",
           unit_price_discount: "15.50",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "1kg",
+          weight: "1000 gr",
           brand: {
             id: "brand_carnes",
             code: "BC001",
@@ -271,7 +274,7 @@ export const listProducts = {
           normal_unit_price: "32.00",
           unit_price_discount: "28.75",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "1kg",
+          weight: "1000 gr",
           brand: {
             id: "brand_mar",
             code: "BM001",
@@ -295,7 +298,7 @@ export const listProducts = {
           normal_unit_price: "21.00",
           unit_price_discount: "18.40",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "1kg",
+          weight: "1000 gr",
           brand: {
             id: "brand_premium",
             code: "BP002",
@@ -309,7 +312,7 @@ export const listProducts = {
           new: false,
         },
         {
-          id: "204",
+          id: "205",
           is_active: true,
           code: "CAR005",
           name: "Costillas de res",
@@ -319,7 +322,7 @@ export const listProducts = {
           normal_unit_price: "15.00",
           unit_price_discount: "11.40",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "1kg",
+          weight: "1000 gr",
           brand: {
             id: "brand_premium",
             code: "BP002",
@@ -352,7 +355,7 @@ export const listProducts = {
           normal_unit_price: "5.50",
           unit_price_discount: "4.80",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "1L",
+          weight: "1000 ml",
           brand: {
             id: "brand_lactosa",
             code: "BL001",
@@ -376,7 +379,7 @@ export const listProducts = {
           normal_unit_price: "25.00",
           unit_price_discount: "22.50",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "400g",
+          weight: "400 gr",
           brand: {
             id: "brand_quesos",
             code: "BQ001",
@@ -400,7 +403,7 @@ export const listProducts = {
           normal_unit_price: "10.50",
           unit_price_discount: "8.90",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "docena",
+          weight: "Docena",
           brand: {
             id: "brand_granja",
             code: "BG002",
@@ -424,7 +427,7 @@ export const listProducts = {
           normal_unit_price: "7.80",
           unit_price_discount: "6.50",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "500g",
+          weight: "500 gr",
           brand: {
             id: "brand_lacteos",
             code: "BL002",
@@ -457,7 +460,7 @@ export const listProducts = {
           normal_unit_price: "9.20",
           unit_price_discount: "7.80",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "500g",
+          weight: "500 gr",
           brand: {
             id: "brand_panaderia",
             code: "BP003",
@@ -481,7 +484,7 @@ export const listProducts = {
           normal_unit_price: "14.50",
           unit_price_discount: "12.00",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "6 unidades",
+          weight: "6 Unidades",
           brand: {
             id: "brand_dulce",
             code: "BD001",
@@ -499,13 +502,13 @@ export const listProducts = {
           is_active: true,
           code: "PAN003",
           name: "Torta de Chocolate",
-          description: "Torta de chocolate belga 1kg",
+          description: "Torta de chocolate belga 1000 gr",
           image: "torta-chocolate.jpg",
           stock: 8,
           normal_unit_price: "52.00",
           unit_price_discount: "45.00",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "1kg",
+          weight: "1000 gr",
           brand: {
             id: "brand_reposteria",
             code: "BR001",
@@ -529,7 +532,7 @@ export const listProducts = {
           normal_unit_price: "6.80",
           unit_price_discount: "5.50",
           created_at: "2024-01-15T00:00:00Z",
-          weight: "300g",
+          weight: "300 gr",
           brand: {
             id: "brand_snack",
             code: "BS001",

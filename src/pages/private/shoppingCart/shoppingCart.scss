@@ -1,0 +1,28 @@
+.cardBarProgress {
+  background: var(--colorBlueLight);
+  padding: 20px;
+  border-radius: 25px;
+}
+
+.card-grid {
+  background: var(--colorBlueLight);
+  padding: 15px;
+  border-radius: 25px;
+
+  .card-product-detail {
+    border: 1px solid var(--colorGray);
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+}
+
+.card-grid-summary {
+  background: var(--colorBlueLight) !important;
+  padding: 15px;
+  border-radius: 25px;
+  max-height: 450px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}

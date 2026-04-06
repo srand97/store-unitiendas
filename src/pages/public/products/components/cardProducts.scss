@@ -1,5 +1,5 @@
 .btns {
-  width: -webkit-fill-available;
+  width: 100%;
   display: flex;
   gap: 10px;
   .btnView {
@@ -12,6 +12,9 @@
     display: flex;
     justify-content: flex-start !important;
   }
+  .btnView:hover {
+    background-color: var(--colorRed);
+  }
   .btnBuy {
     background-color: var(--colorGrayDark);
     color: #fff;
@@ -19,4 +22,8 @@
     height: 40px;
     border-radius: 50% !important;
   }
+}
+
+.card-product {
+  width: 100%;
 }

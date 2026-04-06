@@ -3,7 +3,7 @@ export interface ResponseProducts {
 }
 
 export interface ProductProps {
-  id?: string | number;
+  id: string;
   code?: string;
   name?: string;
   image?: string;
@@ -22,7 +22,8 @@ export interface ProductsData {
   normal_unit_price: string;
   unit_price_discount: string;
   created_at: string;
-  weight: string;
+  unit: string;
+  quantity: string;
   brand: {
     id: string;
     code: string;
@@ -33,5 +34,5 @@ export interface ProductsData {
     code: string;
     name: string;
   };
-  new: boolean;
+  is_new: boolean;
 }

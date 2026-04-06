@@ -8,30 +8,12 @@ import { useAlertStore } from "@/store/alertStore";
 import { useLogin } from "../hook/useLogin";
 import { state } from "../Login";
 import "./formAuth.scss";
-// import { useFetchSelects } from "../hook/useFetchSelects";
-// import { ENDPOINTS } from "@/utils/endpoints";
+import { useFetchSelects } from "../hook/useFetchSelects";
+import { ENDPOINTS } from "@/utils/endpoints";
 
 interface FormRegisterProps {
   setActions: (value: state) => void;
 }
-
-export const identificationTypes = [
-  {
-    id: 1,
-    label: "Cédula de ciudadanía",
-    value: "CC",
-  },
-  {
-    id: 2,
-    label: "Cédula de extranjería",
-    value: "CE",
-  },
-  {
-    id: 3,
-    label: "Pasaporte",
-    value: "PP",
-  },
-];
 
 interface RegisterFormData {
   name: string;
@@ -56,15 +38,15 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
     mode: "onChange",
   });
 
-  // const { list: identificationTypes } = useFetchSelects({
-  //   endpoint: ENDPOINTS.utils.identification_type,
-  //   transformData: (data) =>
-  //     data?.map((item) => ({
-  //       id: item.id,
-  //       label: item.name,
-  //       value: item.code,
-  //     })),
-  // });
+  const { list: identificationTypes } = useFetchSelects({
+    endpoint: ENDPOINTS.utils.identification_type,
+    transformData: (data) =>
+      data?.map((item) => ({
+        id: item?.id,
+        label: item?.name,
+        value: item?.code,
+      })),
+  });
 
   const [step, setStep] = useState<number>(1);
 
@@ -94,6 +76,9 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
   };
 
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
+    const isValid = await trigger(["phone_number", "password", "confirm_password"]);
+
+    if (!isValid) return;
     const response = await useRegister(data);
     if (response?.success) {
       showAlert({
@@ -342,20 +327,30 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
             text="Iniciar sesión"
             onClick={() => setActions("auth")}
           />
-          {step > 1 && (
+          {step === 1 && (
             <MainButton
               className="btnRed size16 fontOnest"
-              onClick={handlePreviousClick}
-              text=""
-              iconLeft={<IconArrowLeft color="#fff" height={20} width={20} />}
+              onClick={handleNextClick}
+              text={loading ? "Cargando..." : "Siguiente"}
             />
           )}
-          <MainButton
-            className="btnRed size16 fontOnest"
-            onClick={step === 2 ? () => undefined : handleNextClick}
-            type={step === 2 ? "submit" : "button"}
-            text={step === 2 ? `${loading ? "Cargando..." : "Registrar"}` : "Siguiente"}
-          />
+          {step === 2 && (
+            <>
+              <MainButton
+                className="btnRed size16 fontOnest"
+                onClick={handlePreviousClick}
+                text=""
+                iconLeft={<IconArrowLeft color="#fff" height={20} width={20} />}
+              />
+              <MainButton
+                className="btnRed size16 fontOnest"
+                onClick={handleSubmit(onSubmit)}
+                type="button"
+                text={loading ? "Cargando..." : "Registrar"}
+                disabled={loading}
+              />
+            </>
+          )}
         </Box>
       </form>
     </Box>

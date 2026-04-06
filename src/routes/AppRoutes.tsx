@@ -9,6 +9,9 @@ import Login from "@/pages/public/login/Login";
 import NotFound from "@/pages/public/notFound/NotFound";
 import Products from "@/pages/public/products/Products";
 import FullLayout from "@/layouts/landingLayout/FullLayout";
+import ProductsDetail from "@/pages/public/products/details/ProductsDetail";
+// import PrivateRoute from "./validateRoutes/PrivateRoute";
+import ShoppingCart from "@/pages/private/shoppingCart/ShoppingCart";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -43,6 +46,18 @@ const AppRoutes = () => {
         {
           path: "/productos",
           element: <Products />,
+        },
+        {
+          path: "/productos/:nombre",
+          element: <ProductsDetail />,
+        },
+        {
+          path: "/carrito-de-compras",
+          element: (
+            // <PrivateRoute>
+              <ShoppingCart />
+            // </PrivateRoute>
+          ),
         },
       ],
     },

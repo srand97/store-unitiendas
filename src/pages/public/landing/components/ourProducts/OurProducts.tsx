@@ -1,13 +1,13 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import CardCategory from "./components/CardCategory";
-import { listProducts } from "./utils/data";
 import { useNavigate } from "react-router-dom";
 import { ProductProps } from "./types/typesProducts";
 import "./ourProducts.scss";
+import { useProducts } from "./hook/useProducts";
 
 const OurProducts = () => {
   const navigate = useNavigate();
-  // const { listProducts } = useProducts();
+  const { listProducts } = useProducts();
   return (
     <Box
       sx={{

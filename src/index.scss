@@ -39,11 +39,12 @@
   /* COLOR ROJO */
   --colorRed: #b50613;
   /* COLOR BLANCO */
+  --colorRedDark: #8f0303;
   --colorWhite: #f8f8f8;
   /* COLOR NEGRO */
   --colorBlack: #343330;
   /* COLOR AZUL CLARO */
-  --colorBlueLight: #eef2f3;
+  --colorBlueLight: #f3f3f3;
   /* COLOR GRIS */
   --colorGray: #e8e4e3;
   --colorGrayDark: #515151;
@@ -256,7 +257,11 @@ body {
   padding: 6px 16px !important;
   border-radius: 20px !important;
   text-transform: none !important;
-  font-family: Onest !important ;
+  font-family: "Onest", sans-serif !important;
+  border: 2px solid transparent !important;
+  transition: all 0.3s ease !important;
+  position: relative;
+  overflow: hidden;
 }
 .btnWhite {
   background-color: var(--colorBlueLight) !important;

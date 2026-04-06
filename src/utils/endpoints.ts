@@ -6,5 +6,6 @@ export const ENDPOINTS = {
   utils: {
     identification_type: "utilities/identification_type/",
   },
-  products: "products/product_client/",
+  products: "products/client/category_products/",
+  productById: "products/client/products/",
 };

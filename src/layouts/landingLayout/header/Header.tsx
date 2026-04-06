@@ -8,12 +8,15 @@ import Search from "@/components/search/Search";
 import "./header.scss";
 import { useAuthStore } from "@/store/authStore";
 import { IconUser } from "@/assets/icon/IconUser";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { MainButton } from "@/components/mainButton/MainButton";
 
 const Header = () => {
   const { isAuth, logout } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const home = "/inicio";
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -27,9 +30,9 @@ const Header = () => {
   const [search, setSearch] = useState<string>("");
 
   return (
-    <Box className="header">
+    <Box className="header" sx={{ position: location.pathname === home ? "absolute" : "initial" }}>
       {/* Logo */}
-      <Box className="logo" onClick={() => navigate("/inicio")}>
+      <Box className="logo" onClick={() => navigate(home)}>
         <img src={IconLogo} alt="IconLogo" />
       </Box>
       {/* Search e Register/Login */}
