@@ -52,7 +52,7 @@ const AppRoutes = () => {
           element: <ProductsDetail />,
         },
         {
-          path: "/carrito-de-compras",
+          path: "/carrito",
           element: (
             // <PrivateRoute>
               <ShoppingCart />

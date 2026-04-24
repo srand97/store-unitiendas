@@ -6,7 +6,6 @@
   align-items: center;
   background-color: var(--colorRed);
   padding: 1rem 2rem;
-  border-radius: 0px 0px 20px 20px;
 
   .logo {
     display: flex;
@@ -32,6 +31,14 @@
       #register {
         border: 2px solid var(--colorWhite);
         padding: 0.3rem 0.5rem;
+        border-radius: 20px;
+        color: var(--colorWhite);
+        text-decoration: none;
+        cursor: pointer;
+      }
+      #buy {
+        border: 2px solid var(--colorWhite);
+        padding: 0.3rem 0.8rem !important;
         border-radius: 20px;
         color: var(--colorWhite);
         text-decoration: none;

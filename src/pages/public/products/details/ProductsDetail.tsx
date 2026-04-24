@@ -13,21 +13,26 @@ import {
   ProductsData,
 } from "../../landing/components/ourProducts/types/typesProducts";
 import { RatingSummary } from "../types/typeProductDetail";
+import { useCartStore } from "@/store/cartStore";
+import { useAlertStore } from "@/store/alertStore";
 
 const ProductsDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const idProduct = location?.state?.product?.id;
   const [idLocal, setIdLocal] = useState<string>("");
+  const [quantity, setQuantity] = useState<number>(1);
+  const { showAlert } = useAlertStore();
 
   const { listProduct, refetch, loading, error } = useProducts(idLocal || idProduct);
+  const { addProduct } = useCartStore();
 
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "instant",
     });
-  }, []);
+  }, [idLocal]);
 
   useEffect(() => {
     if (!idProduct && !idLocal) {
@@ -50,6 +55,26 @@ const ProductsDetail = () => {
     },
     [navigate]
   );
+
+  const handleAddToCart = (product: ProductsData, qty: number = 1) => {
+    if (qty === 0) {
+      showAlert({
+        type: "error",
+        title: "Error",
+        message: "No se puede agregar un producto con cantidad cero",
+        duration: 10000,
+      });
+    }
+    addProduct({
+      id: product.id,
+      name: product.name,
+      normalPrice: product.normal_unit_price,
+      priceDiscount: product.unit_price_discount,
+      image: product.image,
+      category: product.category,
+      quantity: qty,
+    });
+  };
 
   // Loading state
   if (loading) {
@@ -107,19 +132,23 @@ const ProductsDetail = () => {
       </Breadcrumbs>
 
       {/* DETALLE DE UN PRODUCTO */}
-      <Grid container spacing={5}>
+      <Grid container spacing={{ xs: 2, md: 5 }} m={{ sm: "0 0rem", md: "0 2rem", lg: "0 10rem" }}>
         {/* IMAGEN */}
-        <Grid size={{ sm: 12, md: 6 }}>
-          <CustomImage alt={listProduct.name} src={listProduct.image} height={"60vh"} />
+        <Grid size={{ xs: 12, sm: 12, md: 5 }}>
+          <CustomImage
+            alt={listProduct.name}
+            src={listProduct.image}
+            height={{ xs: "35vh", sm: "45vh", md: "55vh", lg: "60vh" }}
+            radius="16px"
+            objectFit="fill"
+          />
         </Grid>
 
         {/* DETALLE DE PRODUCTO */}
-        <Grid size={{ sm: 12, md: 6 }}>
+        <Grid size={{ xs: 12, sm: 12, md: 7 }}>
           <Box className="info-product">
             <Box>
-              {/* CATEGORIA */}
               <Typography className="category-product">{listProduct.category}</Typography>
-              {/* NOMBRE DEL PRODUCTO */}
               <Typography className="name-product">{listProduct.name}</Typography>
             </Box>
 
@@ -145,40 +174,47 @@ const ProductsDetail = () => {
               {listProduct.quantity} {listProduct.unit}
             </Typography>
 
-            {/* CONTADOR */}
-            <Box sx={{ display: "flex", gap: 2, mt: 1.5 }}>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 2 }}>
-                <Typography className="count-product">Cantidad</Typography>
-              </Box>
-              <Counter limit={listProduct.stock} initialValue={0} />
-            </Box>
-
-            {/* PRECIOS */}
-            <Box sx={{ display: "flex", gap: 2, mt: 1.5 }}>
+            {/* PRECIOS — subidos antes del counter para mejor lectura en mobile */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1.5, flexWrap: "wrap" }}>
+              <Typography sx={{ color: "var(--colorBlack)" }} className="fontOnestBold size20">
+                ${listProduct.normal_unit_price}
+              </Typography>
               {listProduct.unit_price_discount && (
                 <Typography
-                  sx={{
-                    color: "var(--colorGrayDark)",
-                    textDecoration: "line-through",
-                  }}
-                  className="fontOnestSemiBold"
+                  sx={{ color: "var(--colorGrayDark)", textDecoration: "line-through" }}
+                  className="fontOnestSemiBold size16"
                 >
                   ${listProduct.unit_price_discount}
                 </Typography>
               )}
-              <Typography
-                sx={{
-                  color: "var(--colorBlack)",
-                }}
-                className="fontOnestBold"
-              >
-                ${listProduct.normal_unit_price}
-              </Typography>
+            </Box>
+
+            {/* CONTADOR */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 2, flexWrap: "wrap" }}>
+              <Typography className="count-product">Cantidad</Typography>
+              <Counter
+                limit={listProduct.stock}
+                initialValue={1}
+                onValueChange={(val: number) => setQuantity(val)}
+              />
             </Box>
 
             {/* BOTONES */}
-            <Box sx={{ mt: 3, width: "100%" }}>
-              <MainButton text="Agregar al carrito" className="btnRed" maxWidth />
+            <Box
+              sx={{
+                mt: 3,
+                width: "100%",
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: 2,
+              }}
+            >
+              <MainButton
+                text="Agregar al carrito"
+                className="btnRed"
+                maxWidth
+                onClick={() => handleAddToCart(listProduct, quantity)}
+              />
               <MainButton />
             </Box>
           </Box>
@@ -229,9 +265,7 @@ const ProductsDetail = () => {
               </Typography>
             )}
           </Grid>
-          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 8 }} className="grid-califications">
-            
-          </Grid>
+          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 8 }} className="grid-califications"></Grid>
         </Grid>
       </Box>
 
@@ -243,7 +277,11 @@ const ProductsDetail = () => {
           <Grid container spacing={2} className="grid-products">
             {listProduct.similar_products.map((product: ProductsData) => (
               <Grid size={{ xs: 6, sm: 4, md: 3, lg: 2 }} key={product.id}>
-                <CardProducts products={product} onClick={() => handleProductClick(product)} />
+                <CardProducts
+                  products={product}
+                  onClickView={() => handleProductClick(product)}
+                  onClickAdd={() => handleAddToCart(product)}
+                />
               </Grid>
             ))}
           </Grid>

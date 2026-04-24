@@ -1,12 +1,13 @@
 import { Box, Breadcrumbs, Grid, Link, Typography, Skeleton } from "@mui/material";
 import CustomImage from "@/components/customImage/CustomImage";
-import { ProductProps } from "../landing/components/ourProducts/types/typesProducts";
+import { ProductProps, ProductsData } from "../landing/components/ourProducts/types/typesProducts";
 import { MainButton } from "@/components/mainButton/MainButton";
 import CardProducts from "./components/CardProducts";
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProducts } from "../landing/components/ourProducts/hook/useProducts";
 import "./products.scss";
+import { useCartStore } from "@/store/cartStore";
 
 // Skeleton Components
 const CategorySkeleton = () => (
@@ -38,6 +39,7 @@ const ProductCardSkeleton = () => (
 const Products = () => {
   const navigate = useNavigate();
   const { listProducts, loading } = useProducts();
+  const { addProduct } = useCartStore();
 
   useEffect(() => {
     window.scrollTo({
@@ -45,6 +47,17 @@ const Products = () => {
       behavior: "instant",
     });
   }, []);
+
+  const handleAddToCart = (product: ProductsData) => {
+    addProduct({
+      id: product.id,
+      name: product.name,
+      normalPrice: product.normal_unit_price,
+      priceDiscount: product.unit_price_discount,
+      image: product.image,
+      category: product.category,
+    });
+  };
 
   const handleNavigateDetail = (name: string, id: string) => {
     navigate(`/productos/${name.toLowerCase().replace(/\s+/g, "-")}`, {
@@ -105,7 +118,7 @@ const Products = () => {
   }
 
   // Show empty state if no products
-  if (!loading && categories.length === 0) {
+  if (categories.length === 0) {
     return (
       <Box sx={{ p: { xs: "10px", sm: "1rem", lg: "3rem 2rem" }, textAlign: "center" }}>
         <Typography className="size30 fontOnestBold">No hay productos disponibles</Typography>
@@ -156,6 +169,7 @@ const Products = () => {
                 boxShadow={true}
                 priority={true}
                 fallbackText="Imagen no disponible"
+                objectFit="cover"
               />
               <Typography className="size14">{product.name}</Typography>
             </Grid>
@@ -194,7 +208,8 @@ const Products = () => {
                 >
                   <CardProducts
                     products={product}
-                    onClick={() => handleNavigateDetail(product?.name, product?.id)}
+                    onClickView={() => handleNavigateDetail(product?.name, product?.id)}
+                    onClickAdd={() => handleAddToCart({ ...product, category: category.name })}
                   />
                 </Grid>
               ))}

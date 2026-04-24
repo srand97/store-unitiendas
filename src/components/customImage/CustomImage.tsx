@@ -5,8 +5,8 @@ type CustomImageProps = {
   handleClick?: () => void;
   src?: string;
   alt?: string;
-  width?: string | number;
-  height?: string | number;
+  width?: string | number | Record<string, any>;
+  height?: string | number | Record<string, any>;
   minHeight?: string;
   radius?: string;
   pointer?: boolean;
@@ -31,7 +31,7 @@ const CustomImage: React.FC<CustomImageProps> = memo(
     boxShadow = false,
     fallbackText = "Imagen no disponible",
     priority = false,
-    objectFit = "cover",
+    objectFit = "contain",
   }) => {
     const [loading, setLoading] = useState(!priority); // Si es priority, asumimos que no necesitamos mostrar skeleton
     const [error, setError] = useState(false);

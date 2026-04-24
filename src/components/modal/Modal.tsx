@@ -2,12 +2,12 @@ import { useEffect, useRef, ReactNode } from "react";
 import styles from "./modal.module.css";
 
 interface ModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    children?: ReactNode;
-    width?: string | number;
-    height?: string | number;
-    isClickOverOut?: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+  children?: ReactNode;
+  width?: string | number;
+  height?: string | number;
+  isClickOverOut?: boolean;
 }
 
 export default function Modal({
@@ -16,16 +16,13 @@ export default function Modal({
   children,
   width = "auto",
   height = "auto",
-  isClickOverOut = false
+  isClickOverOut = false,
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
@@ -35,15 +32,22 @@ export default function Modal({
         onClose();
       }
     };
+
     if (isOpen) {
-      if(isClickOverOut){
+      // Prevenir scroll del body
+      document.body.style.overflow = "hidden";
+
+      if (isClickOverOut) {
         document.addEventListener("mousedown", handleClickOutside);
       }
       document.addEventListener("keydown", handleEscKey);
     }
 
     return () => {
-      if(isClickOverOut){
+      // Restaurar scroll del body
+      document.body.style.overflow = "";
+
+      if (isClickOverOut) {
         document.removeEventListener("mousedown", handleClickOutside);
       }
       document.removeEventListener("keydown", handleEscKey);
@@ -51,6 +55,7 @@ export default function Modal({
   }, [isOpen, onClose, isClickOverOut]);
 
   if (!isOpen) return null;
+
   return (
     <div className={styles.modal}>
       <div

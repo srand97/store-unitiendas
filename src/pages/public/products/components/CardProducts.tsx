@@ -8,10 +8,11 @@ import IconShop from "@/assets/icon/IconShop";
 
 interface ICardProduct {
   products: ProductsData;
-  onClick: () => void;
+  onClickView?: () => void;
+  onClickAdd?: () => void;
 }
 
-const CardProducts = ({ products, onClick }: ICardProduct) => {
+const CardProducts = ({ products, onClickView, onClickAdd }: ICardProduct) => {
   return (
     <Box className="card-product">
       {products?.is_new && <Box className="label">Nuevo</Box>}
@@ -23,6 +24,8 @@ const CardProducts = ({ products, onClick }: ICardProduct) => {
           width={"auto"}
           radius="10px"
           fallbackText="Imagen no disponible"
+          objectFit="fill"
+          zoom
         />
       </Box>
       <Box className="box-info-products">
@@ -36,10 +39,11 @@ const CardProducts = ({ products, onClick }: ICardProduct) => {
         </Typography>
       </Box>
       <Box className="btns">
-        <MainButton className="btnView" text="Ver producto" onClick={onClick} />
+        <MainButton className="btnView" text="Ver producto" onClick={onClickView} />
         <MainButton
           iconLeft={<IconShop height={20} width={20} color="#fff" />}
           className="btnBuy"
+          onClick={onClickAdd}
         />
       </Box>
     </Box>

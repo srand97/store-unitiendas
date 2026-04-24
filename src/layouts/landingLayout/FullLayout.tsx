@@ -9,7 +9,9 @@ import Footer from "./footer/Footer";
 const FullLayout = () => {
   return (
     <Box className="layout">
-      <Header />
+      <Box className="header-wrapper">
+        <Header />
+      </Box>
       <Box className="outlet">
         <Outlet />
       </Box>

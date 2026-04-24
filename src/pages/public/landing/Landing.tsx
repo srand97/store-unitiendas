@@ -30,7 +30,7 @@ const Landing = () => {
         <Carousel
           images={ArrImages}
           width={"100%"}
-          height={"90vh"}
+          height={{ xs: "35vh", md: "60vh", lg: "90vh" }}
           borderRadius={"0px 0px 20px 20px"}
         />
       </Box>
@@ -51,8 +51,15 @@ const Landing = () => {
             gap={2}
             justifyContent={"center"}
             alignItems={"center"}
+            p={1}
           >
-            <Box sx={{ background: "var(--colorRed)", borderRadius: "50%", p: 1 }} />
+            <Box
+              sx={{
+                background: "var(--colorRed)",
+                borderRadius: "50%",
+                p: { xs: "5px", md: "8px", lg: "12px" },
+              }}
+            />
             <Typography className="size72 fontOnestBold">{element.text}</Typography>
           </Grid>
         ))}

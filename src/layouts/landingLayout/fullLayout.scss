@@ -1,9 +1,26 @@
+// fullLayout.scss
 .layout {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 .outlet {
   display: flex;
   flex-direction: column;
-  gap: 10.67px
+  gap: 10.67px;
+  margin-top: 80px;
+  flex: 1;
+}
+
+.footer {
+  margin-top: auto;
 }

@@ -41,7 +41,7 @@ const Alerts = () => {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "rgba(0, 0, 0, 0.5)",
-        zIndex: 50,
+        zIndex: 100000,
       }}
       onClick={hideAlert}
     >
