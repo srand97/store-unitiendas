@@ -6,9 +6,9 @@ export interface CartProduct {
   id: string | number;
   name: string;
   normalPrice: number;
-  priceDiscount?: number; 
-  image?: string
-  weight?: string; 
+  priceDiscount?: number;
+  image?: string;
+  weight?: string;
   category?: string;
   quantity: number;
   [key: string]: any;
@@ -61,7 +61,7 @@ export const useCartStore = create<CartStore>()(
 
       clearCart: () => set({ products: [] }),
 
-      totalItems: () => get().products.reduce((acc, i) => acc + i.quantity, 0),
+      totalItems: () => get().products.length,
 
       totalPrice: () => get().products.reduce((acc, i) => acc + i.normalPrice * i.quantity, 0),
     }),

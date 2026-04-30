@@ -23,24 +23,28 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: start;
-    justify-content: center;
-    gap: 0.5rem;
     box-shadow: rgba(0, 0, 0, 0.5);
     border: 1px solid var(--colorGray);
     padding: 12px;
     border-radius: 15px;
     width: auto;
-    .label {
-      position: absolute;
-      background-color: var(--colorRed);
-      border-radius: 15px;
-      color: #fff;
-      z-index: 1;
-      padding: 2px 8px;
-      top: -10px;
-      right: 12px;
-      font-size: 0.75rem;
+  }
+}
+
+.category-item-wrapper {
+  .size14 {
+    transition: color 0.3s ease;
+  }
+
+  &:hover {
+    .size14 {
+      color: var(--colorRed); // Feedback visual sutil
+    }
+
+    // Si quieres que el círculo resalte más al hacer hover
+    .CustomImage__container {
+      outline: 2px solid var(--colorRed);
+      outline-offset: 4px;
     }
   }
 }
@@ -122,11 +126,10 @@
   }
 }
 
-
 // Smooth skeleton animations
 .MuiSkeleton-root {
   transform: scale(1);
-  
+
   &::after {
     animation: pulse 1.5s ease-in-out infinite;
   }

@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./shoppingCart.scss";
 import PaymentForm from "./components/PaymentForm";
 import CartStep from "./components/CartStep";
+import SuccessStep from "./components/SuccessStep";
 
 const ShoppingCart = () => {
   const [step, setStep] = useState<number>(1);
@@ -42,8 +43,8 @@ const ShoppingCart = () => {
 
       {/* STEPS */}
       {step === 1 && <CartStep onContinue={handleContinue} />}
-      {step === 2 && <PaymentForm onContinue={() => {}} onBack={() => setStep(1)} />}
-      {step === 3 && <></>}
+      {step === 2 && <PaymentForm onContinue={handleContinue} onBack={() => setStep(1)} />}
+      {step === 3 && <SuccessStep />}
     </Box>
   );
 };

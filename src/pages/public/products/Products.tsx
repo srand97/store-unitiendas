@@ -2,12 +2,14 @@ import { Box, Breadcrumbs, Grid, Link, Typography, Skeleton } from "@mui/materia
 import CustomImage from "@/components/customImage/CustomImage";
 import { ProductProps, ProductsData } from "../landing/components/ourProducts/types/typesProducts";
 import { MainButton } from "@/components/mainButton/MainButton";
-import CardProducts from "./components/CardProducts";
+import CardProducts from "./components/cardProducts/CardProducts";
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProducts } from "../landing/components/ourProducts/hook/useProducts";
 import "./products.scss";
 import { useCartStore } from "@/store/cartStore";
+import { motion } from "framer-motion";
+import { useAlertStore } from "@/store/alertStore";
 
 // Skeleton Components
 const CategorySkeleton = () => (
@@ -40,6 +42,12 @@ const Products = () => {
   const navigate = useNavigate();
   const { listProducts, loading } = useProducts();
   const { addProduct } = useCartStore();
+  const { showAlert } = useAlertStore();
+
+  const handleCategoryClick = (categoryName: string) => {
+    const slug = categoryName.toLowerCase().replace(/\s+/g, "-");
+    navigate(`/categoria/${slug}`);
+  };
 
   useEffect(() => {
     window.scrollTo({
@@ -57,6 +65,17 @@ const Products = () => {
       image: product.image,
       category: product.category,
     });
+
+    showAlert({
+      type: "success",
+      title: "¡Logrado!",
+      message: `${product.name} se agregó al carrito correctamente`,
+      duration: 2000,
+    });
+
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
   };
 
   const handleNavigateDetail = (name: string, id: string) => {
@@ -153,25 +172,73 @@ const Products = () => {
         </Typography>
 
         {/* CATEGORIAS */}
-        <Grid container spacing={10} className="grid-category">
+        <Grid
+          container
+          spacing={4} // Reducimos de 10 a 4 para mayor control
+          justifyContent="center" // Centra las categorías si no llenan la fila
+          sx={{ mt: 4, mb: 2 }}
+        >
           {categories.map((product: ProductProps) => (
             <Grid
               key={product.id}
-              size={{ xs: 6, sm: 4, md: 3, lg: 2 }}
-              className="box-category-round"
+              size={{ xs: 4, sm: 3, md: 2, lg: 1.5 }} // Ajuste fino del tamaño
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              onClick={() => handleCategoryClick(product.name as string)}
+              sx={{ cursor: "pointer" }}
             >
-              <CustomImage
-                src={product.image}
-                alt={product.name}
-                width={80}
-                height={80}
-                radius="50%"
-                boxShadow={true}
-                priority={true}
-                fallbackText="Imagen no disponible"
-                objectFit="cover"
-              />
-              <Typography className="size14">{product.name}</Typography>
+              <Box
+                className="category-item-wrapper"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  width: "100%",
+                  maxWidth: "120px", // Limita el ancho para mantener la proporción
+                  cursor: "pointer",
+                  transition: "transform 0.3s ease",
+                  "&:hover": { transform: "translateY(-5px)" },
+                }}
+              >
+                <Box
+                  sx={{
+                    width: { xs: 70, md: 90 },
+                    height: { xs: 70, md: 90 },
+                    mb: 1.5,
+                    position: "relative",
+                  }}
+                >
+                  <CustomImage
+                    src={product.image}
+                    alt={product.name}
+                    width="100%"
+                    height="100%"
+                    radius="50%"
+                    boxShadow={true}
+                    priority={true}
+                    objectFit="cover"
+                    pointer
+                  />
+                </Box>
+
+                <Typography
+                  className="size14 fontOnestSemiBold"
+                  sx={{
+                    textAlign: "center",
+                    width: "100%",
+                    lineHeight: 1.2,
+                    height: "34px", // Altura fija para 2 líneas de texto
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    color: "var(--colorBlack)",
+                  }}
+                >
+                  {product.name}
+                </Typography>
+              </Box>
             </Grid>
           ))}
         </Grid>
@@ -195,25 +262,36 @@ const Products = () => {
                 {category.description}
               </Typography>
               {category.products && category?.products?.length > 5 && (
-                <MainButton className="btnRed" text="ver más..." />
+                <MainButton
+                  className="btnRed"
+                  text="ver más..."
+                  onClick={() => handleCategoryClick(category.name as string)}
+                />
               )}
             </Box>
 
             {/* PRODUCT CARDS */}
-            <Grid container spacing={3} className="grid-products">
-              {category?.products?.slice(0, 6).map((product, index) => (
-                <Grid
-                  key={product.id || `product-${category.id}-${index}`}
-                  size={{ xs: 6, sm: 4, md: 3, lg: 2 }}
-                >
-                  <CardProducts
-                    products={product}
-                    onClickView={() => handleNavigateDetail(product?.name, product?.id)}
-                    onClickAdd={() => handleAddToCart({ ...product, category: category.name })}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="grid-products"
+            >
+              <Grid container spacing={3}>
+                {category?.products?.slice(0, 6).map((product, index) => (
+                  <Grid
+                    key={product.id || `product-${category.id}-${index}`}
+                    size={{ xs: 6, sm: 4, md: 3, lg: 2 }}
+                  >
+                    <CardProducts
+                      products={product}
+                      onClickView={() => handleNavigateDetail(product?.name, product?.id)}
+                      onClickAdd={() => handleAddToCart({ ...product, category: category.name })}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </motion.div>
           </Box>
         ))}
       </Box>

@@ -1,48 +1,55 @@
 .header {
   width: 100%;
-  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: var(--colorRed);
-  padding: 1rem 2rem;
+  padding: 0 4%;
+  z-index: 1100;
+  transition: all 0.3s ease;
+  height: 70px;
 
   .logo {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
     cursor: pointer;
-    a {
-      text-decoration: none;
-      color: var(--colorWhite);
+    img {
+      height: 35px;
+      object-fit: contain;
+    }
+    @media (max-width: 768px) {
+      display: none;
     }
   }
+
+  // Ocultar botones de escritorio en móvil
+  .desktop-actions {
+    @media (max-width: 768px) {
+      display: none !important;
+    }
+  }
+
+  // Ocultar botón hamburguesa en escritorio
+  .mobile-menu-button {
+    display: none;
+    @media (max-width: 768px) {
+      display: block;
+    }
+  }
+
   .searchRegisterLogin {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    div {
+    gap: 1rem;
+
+    #login,
+    #register {
+      text-decoration: none;
+      color: white;
       display: flex;
       align-items: center;
-      #login {
-        color: var(--colorWhite);
-        text-decoration-color: var(--colorWhite);
-      }
-      #register {
-        border: 2px solid var(--colorWhite);
-        padding: 0.3rem 0.5rem;
-        border-radius: 20px;
-        color: var(--colorWhite);
-        text-decoration: none;
-        cursor: pointer;
-      }
-      #buy {
-        border: 2px solid var(--colorWhite);
-        padding: 0.3rem 0.8rem !important;
-        border-radius: 20px;
-        color: var(--colorWhite);
-        text-decoration: none;
-        cursor: pointer;
+      gap: 8px;
+      transition: opacity 0.2s ease;
+      &:hover {
+        opacity: 0.8;
       }
     }
     #contact {
@@ -54,6 +61,22 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      transition: opacity 0.2s ease;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+    #buy {
+      border: 2px solid var(--colorWhite);
+      padding: 0.3rem 0.8rem !important;
+      border-radius: 20px;
+      color: var(--colorWhite);
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 }

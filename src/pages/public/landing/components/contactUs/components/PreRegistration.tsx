@@ -43,15 +43,21 @@ const PreRegistration = () => {
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
       <img src={redLogo} />
-      <Typography className="size20 fontOnestSemiBold" ml={2} mt={2}>
-        Pre-registro
+      <Typography className="size20 fontOnestSemiBold" m={"1.5rem 0"}>
+        Registro
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)} className="formRegister">
         <Fragment>
-          <Box display={"flex"} width={"100%"} gap={1}>
+          <Box
+            display={"flex"}
+            width={"100%"}
+            gap={1}
+            flexDirection={"column"}
+            sx={{ flexDirection: { xs: "column", sm: "row" } }}
+          >
             <section style={{ width: "100%" }}>
-              <Typography className="size16 fontOnest" mb={1} ml={2}>
+              <Typography className="size16 fontOnest" mb={1}>
                 Nombres
               </Typography>
               <Input
@@ -67,13 +73,13 @@ const PreRegistration = () => {
                 error={!!errors.name}
               />
               {errors.name && (
-                <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                <Typography color="error" className="size12 fontOnest" mt={0.5}>
                   {errors.name.message}
                 </Typography>
               )}
             </section>
             <section style={{ width: "100%" }}>
-              <Typography className="size16 fontOnest" mb={1} ml={2}>
+              <Typography className="size16 fontOnest" mb={1}>
                 Apellidos
               </Typography>
               <Input
@@ -89,15 +95,20 @@ const PreRegistration = () => {
                 error={!!errors.last_name}
               />
               {errors.last_name && (
-                <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                <Typography color="error" className="size12 fontOnest" mt={0.5}>
                   {errors.last_name.message}
                 </Typography>
               )}
             </section>
           </Box>
-          <Box display={"flex"} width={"100%"} gap={1}>
+          <Box
+            display={"flex"}
+            width={"100%"}
+            gap={1}
+            sx={{ flexDirection: { xs: "column", sm: "row" } }}
+          >
             <section style={{ width: "100%" }}>
-              <Typography className="size16 fontOnest" mb={1} ml={2}>
+              <Typography className="size16 fontOnest" mb={1}>
                 Tipo de documento
               </Typography>
               <Controller
@@ -124,13 +135,13 @@ const PreRegistration = () => {
                 )}
               />
               {errors.identification_type && (
-                <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                <Typography color="error" className="size12 fontOnest" mt={0.5}>
                   {errors.identification_type.message}
                 </Typography>
               )}
             </section>
             <section style={{ width: "100%" }}>
-              <Typography className="size16 fontOnest" mb={1} ml={2}>
+              <Typography className="size16 fontOnest" mb={1}>
                 Número de documento
               </Typography>
               <Input
@@ -154,14 +165,14 @@ const PreRegistration = () => {
                 error={!!errors.identification_number}
               />
               {errors.identification_number && (
-                <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                <Typography color="error" className="size12 fontOnest" mt={0.5}>
                   {errors.identification_number.message}
                 </Typography>
               )}
             </section>
           </Box>
           <section>
-            <Typography className="size16 fontOnest" mb={1} ml={2}>
+            <Typography className="size16 fontOnest" mb={1}>
               Email
             </Typography>
             <Input
@@ -177,7 +188,7 @@ const PreRegistration = () => {
               error={!!errors.email}
             />
             {errors.email && (
-              <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+              <Typography color="error" className="size12 fontOnest" mt={0.5}>
                 {errors.email.message}
               </Typography>
             )}
@@ -186,7 +197,7 @@ const PreRegistration = () => {
 
         <Fragment>
           <section>
-            <Typography className="size16 fontOnest" mb={1} ml={2}>
+            <Typography className="size16 fontOnest" mb={1}>
               Número de teléfono
             </Typography>
             <Input
@@ -202,7 +213,7 @@ const PreRegistration = () => {
               error={!!errors.phone_number}
             />
             {errors.phone_number && (
-              <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+              <Typography color="error" className="size12 fontOnest" mt={0.5}>
                 {errors.phone_number.message}
               </Typography>
             )}
@@ -214,7 +225,7 @@ const PreRegistration = () => {
           className="formAuth__buttons"
           sx={{ display: "flex", justifyContent: "space-between", alignContent: "center" }}
         >
-          <Typography>
+          <Typography className="size12 fontOnest" color="var(--colorRed)">
             El pre-registro está sujeto a aprobación, recibirás la confirmación al correo ingresado.
           </Typography>
           <MainButton

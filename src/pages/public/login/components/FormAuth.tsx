@@ -58,12 +58,12 @@ const FormAuth = ({ setActions }: FormAuthProps) => {
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
-      <Typography className="size20 fontOnestSemiBold" mb={3} ml={2}>
+      <Typography className="size20 fontOnestSemiBold" mb={3}>
         Iniciar sesión
       </Typography>
       <form className="formAuth" onSubmit={handleSubmit(onSubmit)}>
         <section>
-          <Typography className="size16 fontOnest" mb={1} ml={2}>
+          <Typography className="size16 fontOnest" mb={1}>
             Email o número de teléfono
           </Typography>
           <Input
@@ -75,14 +75,14 @@ const FormAuth = ({ setActions }: FormAuthProps) => {
             error={!!errors.username}
           />
           {errors.username && (
-            <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+            <Typography color="error" className="size12 fontOnest" mt={0.5} >
               {errors.username.message}
             </Typography>
           )}
         </section>
 
         <section>
-          <Typography className="size16 fontOnest" mb={1} ml={2}>
+          <Typography className="size16 fontOnest" mb={1} >
             Contraseña
           </Typography>
           <Input
@@ -95,7 +95,7 @@ const FormAuth = ({ setActions }: FormAuthProps) => {
             error={!!errors.password}
           />
           {errors.password && (
-            <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+            <Typography color="error" className="size12 fontOnest" mt={0.5} >
               {errors.password.message}
             </Typography>
           )}
@@ -108,7 +108,7 @@ const FormAuth = ({ setActions }: FormAuthProps) => {
             type="submit"
           />
           <MainButton
-            className="btnSimple size16 fontOnest"
+            className="btnOutline size16 fontOnest"
             onClick={handleRegisterClick}
             text="Registrarme"
           />

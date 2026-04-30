@@ -1,28 +1,36 @@
 .containerLanding {
   position: relative;
+  width: 100%;
+  // overflow-x: hidden; // Evita scroll horizontal por animaciones
 
-  // ABOUT ME
-  .containerAboutMe {
-    padding: 8rem 3rem;
-  }
-
-  // CONTACT US
-  .containerContactUs {
-    padding: 8rem 3rem;
-  }
-
-  // OUR PRODUCTS
-  .containerOurProducts {
-    padding: 8rem 3rem;
-  }
-
-  // COMMENTS
+  // Estructura base para todas las secciones
+  .containerAboutMe,
+  .containerContactUs,
+  .containerOurProducts,
   .containerComments {
-    padding: 8rem 3rem;
+    padding: 5rem; // Desktop Large
+
+    // Tablets
+    @media (max-width: 1024px) {
+      padding: 3rem;
+    }
+
+    // Móviles
+    @media (max-width: 600px) {
+      padding: 1.5rem;
+    }
   }
 
-  // GUIDE
+  // Sección especial de GUÍA (menor padding inferior)
   .containerGuide {
-    padding: 4rem 3rem 0rem 3rem;
+    padding: 4rem 5rem 0rem 5rem;
+
+    @media (max-width: 1024px) {
+      padding: 4rem 3rem 0rem 3rem;
+    }
+
+    @media (max-width: 600px) {
+      padding: 3rem 1.5rem 0rem 1.5rem;
+    }
   }
 }

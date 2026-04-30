@@ -9,6 +9,7 @@ import Comments from "./components/comments/Comments";
 import Guide from "./components/guide/Guide";
 import OurProducts from "./components/ourProducts/OurProducts";
 import "./landing.scss";
+import { motion } from "framer-motion";
 
 const items = [
   {
@@ -21,6 +22,20 @@ const items = [
     text: "Más oportunidades.",
   },
 ];
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 const Landing = () => {
   return (
@@ -35,35 +50,75 @@ const Landing = () => {
         />
       </Box>
 
-      <Grid
-        container
-        spacing={1}
-        sx={{
-          margin: "20px 0",
-          padding: "50px 0",
-          borderBottom: "2px solid var(--colorGray)",
-        }}
-      >
-        {items.map((element) => (
-          <Grid
-            size={{ xs: 4 }}
-            display={"flex"}
-            gap={2}
-            justifyContent={"center"}
-            alignItems={"center"}
-            p={1}
-          >
-            <Box
+      <Box sx={{ padding: "2rem 0", borderBottom: "0.5px solid var(--colorGray)" }}>
+        <Typography
+          sx={{
+            fontSize: "11px",
+            fontWeight: 500,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "text.secondary",
+            mb: 2,
+            ml: 4,
+          }}
+        >
+          ¿Por qué elegirnos?
+        </Typography>
+
+        <Grid
+          container
+          component={motion.div}
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+        >
+          {items.map((element, index) => (
+            <Grid
+              key={index}
+              size={{ xs: 12, md: 4 }}
+              display="flex"
+              alignItems="center"
+              justifyContent={"center"}
+              gap={2}
+              p={{ xs: "1.2rem 1.5rem", md: "1.5rem 2rem" }}
               sx={{
-                background: "var(--colorRed)",
-                borderRadius: "50%",
-                p: { xs: "5px", md: "8px", lg: "12px" },
+                borderRight: {
+                  md: index < items.length - 1 ? "0.5px solid var(--colorGray)" : "none",
+                },
+                borderBottom: {
+                  xs: index < items.length - 1 ? "0.5px solid var(--colorGray)" : "none",
+                  md: "none",
+                },
               }}
-            />
-            <Typography className="size72 fontOnestBold">{element.text}</Typography>
-          </Grid>
-        ))}
-      </Grid>
+              component={motion.div}
+              variants={itemVariants}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <Box
+                component={motion.div}
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.3,
+                  delay: index * 0.15 + 0.2,
+                  type: "spring",
+                  stiffness: 200,
+                }}
+                sx={{
+                  width: 10,
+                  height: 10,
+                  minWidth: 10,
+                  borderRadius: "50%",
+                  background: "var(--colorRed)",
+                }}
+              />
+              <Typography className="size40 fontOnestSemiBold">{element.text}</Typography>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
 
       {/* ABOUT ME */}
       <Box className="containerAboutMe">

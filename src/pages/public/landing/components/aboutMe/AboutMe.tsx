@@ -1,69 +1,76 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Button, Grid, Typography } from "@mui/material";
-
-// IMPORTADOS
-import "./aboutMe.scss";
-import { ArrInfo } from "../../utils/utils";
+import { motion, Variants } from "framer-motion";
 import IconAdd from "@mui/icons-material/Add";
+import { ArrInfo } from "../../utils/utils";
+import "./aboutMe.scss";
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.5, ease: "easeOut" },
+  }),
+};
+
+const CardInfo = ({ icon: Icon, title, description, index }: any) => (
+  <Box
+    variants={cardVariants}
+    component={motion.div}
+    custom={index}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    className="about-card"
+  >
+    <Box className="icon-wrapper">
+      <Icon />
+    </Box>
+    <Box className="content-wrapper">
+      <Typography className="fontOnestSemiBold size18 title">{title}</Typography>
+      <Typography className="fontOnest size15 description">{description}</Typography>
+    </Box>
+    {/* <Button className="btnOutline size14">
+      <IconAdd sx={{ fontSize: 18 }} />
+      Saber más
+    </Button> */}
+  </Box>
+);
 
 const AboutMe = () => {
-  const CardInfo = ({
-    icon: Icon,
-    title,
-    description,
-  }: {
-    icon: any;
-    title: string;
-    description: string;
-  }) => {
-    return (
-      <Box
-        sx={{
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
-        <Box>
-          <Icon height={25} width={25} />
-        </Box>
-        <Box>
-          <Typography className="title size18">{title}</Typography>
-          <Typography className="description size16">{description}</Typography>
-        </Box>
-        <Box>
-          <Button
-            className="btnWhite size16"
-            sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-          >
-            <IconAdd />
-            Ver más
-          </Button>
-        </Box>
-      </Box>
-    );
-  };
   return (
-    <Box>
-      <Box className="AboutMe__container">
-        <Typography className="title size40">¿Quiénes Somos?</Typography>
-        <Typography className="description size18">
-          Uni Tiendas conecta a tenderos con proveedores de productos esenciales.
-        </Typography>
-        <Typography className="text size16">
-          Buscamos construir una red de colaboración que permita a ambos crecer: los tenderos
-          acceden a mejores precios y condiciones, y los proveedores amplían su alcance de forma
-          directa y sostenible. Creemos en el valor de las alianzas que impulsan negocios,
-          comunidades y oportunidades para todos.
-        </Typography>
-        <Button className="btnRed size16">Quiero saber más</Button>
+    <Box className="AboutMe">
+      <Box className="AboutMe__header">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <Typography className="fontOnestBold size50 title">¿Quiénes Somos?</Typography>
+          <Typography className="fontOnestSemiBold size20 description">
+            Uni Tiendas conecta a tenderos con proveedores de productos esenciales.
+          </Typography>
+          <Typography className="fontOnest size16 text">
+            Buscamos construir una red de colaboración que permita a ambos crecer: los tenderos
+            acceden a mejores precios y condiciones, y los proveedores amplían su alcance de forma
+            directa y sostenible.
+          </Typography>
+          <Button className="btnRed size16" sx={{ mt: 2 }}>
+            Quiero saber más
+          </Button>
+        </motion.div>
       </Box>
-      <Grid container spacing={5} className="AboutMe__grid">
+
+      <Grid container spacing={4} className="AboutMe__grid">
         {ArrInfo?.map((item, index) => (
-          <Grid size={{ xs: 12, md: 4, lg: 2.4 }} key={index}>
-            <CardInfo icon={item.icon} title={item.title} description={item.description} />
+          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2.4 }} key={index}>
+            <CardInfo
+              icon={item.icon}
+              title={item.title}
+              description={item.description}
+              index={index}
+            />
           </Grid>
         ))}
       </Grid>

@@ -1,29 +1,47 @@
 .containerLogin {
   margin: 4rem 5rem;
-  padding: 0rem 5rem;
-  background-color: var(--colorBlueLight) !important;
+  padding: 0rem 5rem;    
+  background-color: var(--colorBlueLight); 
   height: auto;
   border-radius: 25px 0 25px 0;
   position: relative;
-  grid-area: containerLogin;
-  background-color: pink;
+  overflow: hidden; // Para que el logo grande no genere scroll horizontal
 
   .containerLogin__grid {
-    height: auto;
+    height: 100%;
     display: flex;
     align-items: center;
-    .gridChildren{
+
+    .gridChildren {
       display: flex;
       justify-content: center;
-      #logoSmall{
+      
+      #logoSmall {
         max-width: 250px;
+        align-self: center; // Centra el logo en la columna
       }
     }
   }
 }
 
-@media (max-width: 800px) {
+// Media Query para Móvil
+@media (max-width: 900px) { // Ajustado a 900px para cubrir tablets/mobile
   .containerLogin {
-    padding: 0rem 1rem;
+    margin: 0;           // Eliminamos el margen exterior
+    padding: 2rem 1.5rem; // Padding interno para que el form no toque los bordes
+    background-color: transparent !important; // Quitamos el fondo (o usa var(--colorWhite))
+    border-radius: 0;    // Quitamos los bordes redondeados
+    width: 100%;
+
+    .containerLogin__grid {
+      // Ocultamos la columna del logo grande en móvil para ganar espacio
+      .gridChildren:last-child {
+        display: none; 
+      }
+      
+      .gridChildren:first-child {
+        width: 100%; // Aseguramos que la columna del form sea total
+      }
+    }
   }
 }

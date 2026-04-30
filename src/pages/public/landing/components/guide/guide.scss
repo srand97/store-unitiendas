@@ -1,48 +1,71 @@
-.Guide__container {
-  width: 35%;
-  .title {
-    font-family: "Onest-Bold";
-    margin-bottom: 1rem !important;
-  }
-  .text {
-    font-family: "Onest";
-    margin-bottom: 1rem !important;
-  }
-}
-.Guide__grid {
+.Guide {
+  padding: 8rem 5%;
+  background-color: var(--colorBlueLight);
   width: 100%;
-  .title {
-    font-family: "Onest-SemiBold";
-    margin-bottom: 2rem !important;
+  border-radius: 40px;
+  margin: 4rem 0;
+
+  &__header {
+    width: 45%;
+    @media (max-width: 900px) {
+      width: 100%;
+      text-align: center;
+    }
   }
-  .description {
-    font-family: "Onest";
+
+  &__progress-container {
+    width: 100%;
+    margin: 6rem 0 4rem 0;
+    
+    .Guide__line-bg {
+      height: 4px; // Línea delgada = Minimalismo
+      width: 100%;
+      background-color: var(--colorGray);
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .Guide__line-active {
+      height: 100%;
+      background-color: var(--colorRed);
+      border-radius: 10px;
+      animation: progressInfinite 4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+  }
+
+  &__grid {
+    .step-number {
+      color: var(--colorRed);
+      opacity: 0.15;
+      font-size: 3.5rem;
+      margin-bottom: -1.5rem;
+      margin-left: -5px;
+    }
+    
+    .title { margin-bottom: 0.8rem !important; }
+    .description { color: var(--colorGrayDark); line-height: 1.6; }
   }
 }
 
-.Guide__line {
-  height: 8px;
-  width: 100%;
-  background-color: var(--colorRed);
-  animation: Guide__line 10s infinite;
-  margin: 8rem 0 4rem 0;
-  border-radius: 10px;
-}
-
-@keyframes Guide__line {
+@keyframes progressInfinite {
   0% {
     width: 0%;
-  }
-  25% {
-    width: 25%;
+    left: 0;
   }
   50% {
-    width: 50%;
-  }
-  75% {
-    width: 75%;
+    width: 100%;
+    left: 0;
   }
   100% {
-    width: 100%;
+    width: 0%;
+    left: 100%; // Esto hace que la línea se "desvanezca" hacia la derecha
+  }
+}
+
+@media (max-width: 600px) {
+  .Guide {
+    padding: 4rem 1.5rem;
+    border-radius: 20px;
   }
 }

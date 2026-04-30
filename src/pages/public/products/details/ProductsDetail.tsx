@@ -5,7 +5,7 @@ import CustomImage from "@/components/customImage/CustomImage";
 import Califications from "@/components/califications/Califications";
 import { Counter } from "@/components/counter/Counter";
 import { MainButton } from "@/components/mainButton/MainButton";
-import CardProducts from "../components/CardProducts";
+import CardProducts from "../components/cardProducts/CardProducts";
 import { useProducts } from "../../landing/components/ourProducts/hook/useProducts";
 import "./productsDetail.scss";
 import {
@@ -15,6 +15,7 @@ import {
 import { RatingSummary } from "../types/typeProductDetail";
 import { useCartStore } from "@/store/cartStore";
 import { useAlertStore } from "@/store/alertStore";
+import { motion } from "framer-motion";
 
 const ProductsDetail = () => {
   const location = useLocation();
@@ -74,6 +75,16 @@ const ProductsDetail = () => {
       category: product.category,
       quantity: qty,
     });
+
+    showAlert({
+      type: "success",
+      title: "¡Logrado!",
+      message: `${product.name} se agregó al carrito correctamente`,
+      duration: 2000,
+    });
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
   };
 
   // Loading state
@@ -209,13 +220,14 @@ const ProductsDetail = () => {
                 gap: 2,
               }}
             >
-              <MainButton
-                text="Agregar al carrito"
-                className="btnRed"
-                maxWidth
-                onClick={() => handleAddToCart(listProduct, quantity)}
-              />
-              <MainButton />
+              <motion.div whileTap={{ scale: 0.95 }} style={{ width: "100%", maxWidth: "400px" }}>
+                <MainButton
+                  text="Agregar al carrito"
+                  className="btnRed"
+                  maxWidth
+                  onClick={() => handleAddToCart(listProduct, quantity)}
+                />
+              </motion.div>
             </Box>
           </Box>
         </Grid>

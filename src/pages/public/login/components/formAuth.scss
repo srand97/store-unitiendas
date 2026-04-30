@@ -1,63 +1,128 @@
 .formRegister {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
+
+  .progress__line {
+    height: 4px; // Línea más delgada y elegante
+    background-color: var(--colorRed);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .formAuth__buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    @media (max-width: 600px) {
+      flex-direction: column-reverse; // Pone el botón principal arriba en móvil
+
+      button {
+        width: 100%; // Botones de ancho completo en móvil
+      }
+    }
+  }
+
+  // Estilo para el contenedor de la línea gris
+  .progress-container {
+    width: 100%;
+    height: 4px;
+    background-color: var(--colorGray) !important;
+    margin: 1.5rem 0;
+    border-radius: 2px;
+    overflow: hidden;
+  }
 }
+
+// Ajuste para el Input de MUI si no lo tienes
+.input {
+  width: 100%;
+  &::before,
+  &::after {
+    display: none; // Minimalismo: quitamos la línea de abajo de MUI
+  }
+  input {
+    background: var(--colorWhite);
+    border: 1.5px solid var(--colorGray);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-family: "Onest", sans-serif;
+    transition: border-color 0.2s;
+
+    &:focus {
+      border-color: var(--colorRed);
+    }
+  }
+}
+
+.select {
+  width: 100%;
+  background-color: var(--colorWhite); // Fondo igual al input
+  border-radius: 8px !important; // Radio de borde consistente
+  font-family: "Onest", sans-serif;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  border: 1.5px solid var(--colorGray); // Borde igual al input
+
+  // Eliminamos el fieldset nativo de MUI para controlar el borde nosotros
+  fieldset {
+    display: none;
+  }
+
+  // Estilo del contenedor del texto seleccionado
+  .MuiSelect-select {
+    padding: 12px 16px !important;
+    display: flex;
+    align-items: center;
+    min-height: auto !important;
+  }
+
+  // Estado Focus (Abierto o seleccionado)
+  &.Mui-focused {
+    border-color: var(--colorRed); // Color de acento
+  }
+
+  // Icono de la flecha
+  .MuiSvgIcon-root {
+    color: var(--colorGrayDark);
+    right: 12px;
+  }
+}
+
+// Estilo para cuando no hay nada seleccionado (Placeholder)
+.placeholderSelect {
+  .MuiSelect-select {
+    color: var(--colorGrayDark);
+    opacity: 0.6;
+  }
+}
+
+// Para las opciones del menú desplegable (asegurar tipografía)
+.MuiMenuItem-root {
+  font-family: "Onest", sans-serif !important;
+  font-size: 14px !important;
+
+  &:hover {
+    background-color: var(--colorRedTint) !important; // Fondo suave al pasar el mouse
+  }
+
+  &.Mui-selected {
+    background-color: var(--colorRedTint) !important;
+    color: var(--colorRedDark);
+    font-weight: 600;
+  }
+}
+
 .formAuth {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.input {
-  width: 100%;
-  border-radius: 25px;
-  background-color: #e3ecee;
-  padding: 8px 18px;
-}
-
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
-
-.select {
-  width: 100%;
-  background-color: #e3ecee;
-  border-radius: 25px !important;
-  div {
-    padding: 12px 18px !important;
-  }
-  fieldset {
-    display: none;
-  }
-}
-.placeholderSelect {
-  div {
-    opacity: 0.5;
-  }
-}
-
-.input::placeholder {
-  color: var(--colorGray);
-}
-
-.input::before,
-.input::after {
-  border: none !important;
-}
-
-.formAuth__buttons {
-  display: flex;
-  gap: 1rem;
-  width: auto;
-  z-index: 1;
-}
-
-.progress__line {
-  height: 8px;
-  background-color: var(--colorRed);
-  margin: 1rem 0 2rem 0;
-  border-radius: 10px;
 }

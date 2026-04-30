@@ -1,0 +1,16 @@
+.CategoryDetail {
+  padding: 4rem 5%;
+  min-height: 100vh;
+  background-color: var(--colorWhite);
+
+  .MuiBreadcrumbs-root {
+    font-family: "Onest";
+    font-size: 14px;
+    a { color: var(--colorGrayDark); text-decoration: none; &:hover { color: var(--colorRed); } }
+  }
+
+  .size40 {
+    margin-bottom: 0.5rem;
+    color: var(--colorBlack);
+  }
+}

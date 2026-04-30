@@ -1,19 +1,20 @@
 import { useState, useEffect, useRef, memo } from "react";
-import { Skeleton, Box } from "@mui/material";
+import { Skeleton, Box, Typography } from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
 
 type CustomImageProps = {
   handleClick?: () => void;
   src?: string;
   alt?: string;
-  width?: string | number | Record<string, any>;
-  height?: string | number | Record<string, any>;
+  width?: string | number | any;
+  height?: string | number | any;
   minHeight?: string;
   radius?: string;
   pointer?: boolean;
   zoom?: boolean;
   boxShadow?: boolean;
   fallbackText?: string;
-  priority?: boolean; // Para imágenes que deben cargarse prioritariamente
+  priority?: boolean;
   objectFit?: "cover" | "contain" | "fill" | "none" | "scale-down";
 };
 
@@ -23,176 +24,119 @@ const CustomImage: React.FC<CustomImageProps> = memo(
     src = "",
     alt = "Image",
     width = "100%",
-    height = "",
+    height = "100%",
     minHeight = "",
-    radius = "30px",
+    radius = "20px", // Ajustado a tu nueva línea de diseño
     pointer = false,
     zoom = false,
     boxShadow = false,
     fallbackText = "Imagen no disponible",
     priority = false,
-    objectFit = "contain",
+    objectFit = "cover",
   }) => {
-    const [loading, setLoading] = useState(!priority); // Si es priority, asumimos que no necesitamos mostrar skeleton
-    const [error, setError] = useState(false);
-    const imgRef = useRef<HTMLImageElement>(null);
-    const observerRef = useRef<IntersectionObserver | null>(null);
-    const [isVisible, setIsVisible] = useState(priority); // Si es priority, consideramos que ya es visible
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const [isInView, setIsInView] = useState(priority);
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    const shouldShowSkeleton = loading && !error && !priority;
-    const shouldShowFallback = error || !src;
-
-    // Configurar Intersection Observer para lazy loading
+    // Intersection Observer para Lazy Loading
     useEffect(() => {
-      if (priority || !src) {
-        setIsVisible(true);
-        return;
-      }
+      if (priority || !src) return;
 
-      observerRef.current = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setIsVisible(true);
-              observerRef.current?.disconnect();
-            }
-          });
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsInView(true);
+            observer.disconnect();
+          }
         },
-        {
-          rootMargin: "50px", // Comienza a cargar 50px antes de que sea visible
-          threshold: 0.1,
-        }
+        { rootMargin: "100px" } // Carga un poco antes de entrar al viewport
       );
 
-      if (imgRef.current) {
-        observerRef.current.observe(imgRef.current);
-      }
-
-      return () => {
-        observerRef.current?.disconnect();
-      };
+      if (containerRef.current) observer.observe(containerRef.current);
+      return () => observer.disconnect();
     }, [src, priority]);
 
-    // Manejar la carga de la imagen
-    useEffect(() => {
-      if (!isVisible || !src) {
-        if (!src) setError(true);
-        return;
-      }
-
-      setLoading(true);
-      setError(false);
-
-      const img = new Image();
-      img.src = src;
-
-      if (img.complete) {
-        setLoading(false);
-      } else {
-        img.onload = () => {
-          setLoading(false);
-        };
-        img.onerror = () => {
-          setError(true);
-          setLoading(false);
-        };
-      }
-
-      // Cleanup
-      return () => {
-        img.onload = null;
-        img.onerror = null;
-      };
-    }, [src, isVisible]);
-
-    // Handlers
-    const handleImageLoad = () => {
-      setLoading(false);
-    };
-
-    const handleImageError = () => {
-      setError(true);
-      setLoading(false);
-    };
-
-    // Estilos base
-    const boxStyles = {
-      position: "relative" as const,
-      width: width || "-webkit-fill-available",
-      height,
-      minHeight,
-      mb: 1,
-      borderRadius: radius,
-      overflow: "hidden",
-      cursor: pointer ? "pointer" : "default",
-      transition: zoom ? "transform 0.3s ease" : undefined,
-      ":hover": { transform: zoom ? "scale(1.03)" : undefined },
-      boxShadow: boxShadow ? "0px 4px 6px 0px rgba(29, 20, 139, 0.25)" : "none",
-      backgroundColor: "#f5f5f5", // Color de fondo mientras carga
-    };
+    const handleLoad = () => setIsLoaded(true);
+    const handleError = () => setHasError(true);
 
     return (
-      <Box sx={boxStyles} onClick={handleClick} ref={imgRef}>
-        {/* Skeleton durante la carga */}
-        {shouldShowSkeleton && (
-          <Skeleton
-            animation="wave"
-            variant="rectangular"
-            width="100%"
-            height="100%"
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              borderRadius: radius,
-            }}
-          />
-        )}
+      <Box
+        ref={containerRef}
+        component={motion.div}
+        whileHover={zoom && !hasError ? { scale: 1.05 } : {}}
+        transition={{ duration: 0.4, ease: [0.43, 0.13, 0.23, 0.96] }}
+        onClick={handleClick}
+        sx={{
+          position: "relative",
+          width,
+          height,
+          minHeight,
+          borderRadius: radius,
+          overflow: "hidden",
+          cursor: pointer ? "pointer" : "default",
+          backgroundColor: hasError ? "var(--colorBlueLight)" : "transparent",
+          boxShadow: boxShadow ? "0px 10px 20px rgba(0,0,0,0.05)" : "none",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {/* Skeleton - Solo si no ha cargado y no hay error */}
+        <AnimatePresence>
+          {!isLoaded && !hasError && (
+            <Box
+              component={motion.div}
+              exit={{ opacity: 0 }}
+              sx={{
+                position: "absolute",
+                inset: 0,
+                zIndex: 1,
+              }}
+            >
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                width="100%"
+                height="100%"
+                sx={{ bgcolor: "rgba(0,0,0,0.05)" }}
+              />
+            </Box>
+          )}
+        </AnimatePresence>
 
-        {/* Imagen real */}
-        {isVisible && !shouldShowFallback && (
-          <img
-            src={src}
-            alt={alt}
-            onLoad={handleImageLoad}
-            onError={handleImageError}
-            loading={priority ? "eager" : "lazy"} // lazy loading nativo
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit,
-              display: loading ? "none" : "block",
-              borderRadius: radius,
-            }}
-          />
-        )}
-
-        {/* Fallback cuando hay error */}
-        {shouldShowFallback && (
-          <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#f0f0f0",
-              color: "#999",
-              fontSize: "14px",
-              borderRadius: radius,
-              p: 2,
-              textAlign: "center",
-            }}
-          >
-            {fallbackText}
+        {/* Fallback de Error */}
+        {hasError || !src ? (
+          <Box sx={{ p: 2, textAlign: "center" }}>
+            <Typography variant="caption" color="text.secondary" className="fontOnest">
+              {fallbackText}
+            </Typography>
           </Box>
+        ) : (
+          isInView && (
+            <motion.img
+              src={src}
+              alt={alt}
+              onLoad={handleLoad}
+              onError={handleError}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isLoaded ? 1 : 0 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit,
+                borderRadius: radius,
+                display: hasError ? "none" : "block",
+              }}
+            />
+          )
         )}
       </Box>
     );
   }
 );
 
-// Display name para debugging
 CustomImage.displayName = "CustomImage";
 
 export default CustomImage;

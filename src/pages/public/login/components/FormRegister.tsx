@@ -102,21 +102,30 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
 
   return (
     <Box sx={{ width: "100%", height: "100%" }}>
-      <Typography className="size20 fontOnestSemiBold" ml={2}>
-        Registro
-      </Typography>
+      <Typography className="size20 fontOnestSemiBold">Registro</Typography>
 
       {/* LINE */}
-      <Box sx={{ width: "100%", height: "100%", backgroundColor: "var(--colorGray)" }}>
-        <Box className="progress__line" sx={{ width: step === 1 ? "50%" : "100%" }} />
+      <Box className="progress-container">
+        <Box
+          className="progress__line"
+          sx={{
+            width: step === 1 ? "50%" : "100%",
+            height: "100%",
+          }}
+        />
       </Box>
       <form onSubmit={handleSubmit(onSubmit)} className="formRegister">
         {/* STEP 1 */}
         {step === 1 && (
           <Fragment>
-            <Box display={"flex"} width={"100%"} gap={1}>
+            <Box
+              display="flex"
+              width="100%"
+              gap={1}
+              sx={{ flexDirection: { xs: "column", sm: "row" } }}
+            >
               <section style={{ width: "100%" }}>
-                <Typography className="size16 fontOnest" mb={1} ml={2}>
+                <Typography className="size16 fontOnest" mb={1} >
                   Nombres
                 </Typography>
                 <Input
@@ -132,13 +141,13 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
                   error={!!errors.name}
                 />
                 {errors.name && (
-                  <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                  <Typography color="error" className="size12 fontOnest" mt={0.5} >
                     {errors.name.message}
                   </Typography>
                 )}
               </section>
               <section style={{ width: "100%" }}>
-                <Typography className="size16 fontOnest" mb={1} ml={2}>
+                <Typography className="size16 fontOnest" mb={1} >
                   Apellidos
                 </Typography>
                 <Input
@@ -154,15 +163,20 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
                   error={!!errors.last_name}
                 />
                 {errors.last_name && (
-                  <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                  <Typography color="error" className="size12 fontOnest" mt={0.5} >
                     {errors.last_name.message}
                   </Typography>
                 )}
               </section>
             </Box>
-            <Box display={"flex"} width={"100%"} gap={1}>
+            <Box
+              display="flex"
+              width="100%"
+              gap={1}
+              sx={{ flexDirection: { xs: "column", sm: "row" } }}
+            >
               <section style={{ width: "100%" }}>
-                <Typography className="size16 fontOnest" mb={1} ml={2}>
+                <Typography className="size16 fontOnest" mb={1} >
                   Tipo de documento
                 </Typography>
                 <Controller
@@ -189,13 +203,13 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
                   )}
                 />
                 {errors.identification_type && (
-                  <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                  <Typography color="error" className="size12 fontOnest" mt={0.5} >
                     {errors.identification_type.message}
                   </Typography>
                 )}
               </section>
               <section style={{ width: "100%" }}>
-                <Typography className="size16 fontOnest" mb={1} ml={2}>
+                <Typography className="size16 fontOnest" mb={1} >
                   Número de documento
                 </Typography>
                 <Input
@@ -219,14 +233,14 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
                   error={!!errors.identification_number}
                 />
                 {errors.identification_number && (
-                  <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                  <Typography color="error" className="size12 fontOnest" mt={0.5} >
                     {errors.identification_number.message}
                   </Typography>
                 )}
               </section>
             </Box>
             <section>
-              <Typography className="size16 fontOnest" mb={1} ml={2}>
+              <Typography className="size16 fontOnest" mb={1} >
                 Email
               </Typography>
               <Input
@@ -242,7 +256,7 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
                 error={!!errors.email}
               />
               {errors.email && (
-                <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                <Typography color="error" className="size12 fontOnest" mt={0.5} >
                   {errors.email.message}
                 </Typography>
               )}
@@ -254,7 +268,7 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
         {step === 2 && (
           <Fragment>
             <section>
-              <Typography className="size16 fontOnest" mb={1} ml={2}>
+              <Typography className="size16 fontOnest" mb={1} >
                 Número de teléfono
               </Typography>
               <Input
@@ -270,13 +284,13 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
                 error={!!errors.phone_number}
               />
               {errors.phone_number && (
-                <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                <Typography color="error" className="size12 fontOnest" mt={0.5} >
                   {errors.phone_number.message}
                 </Typography>
               )}
             </section>
             <section>
-              <Typography className="size16 fontOnest" mb={1} ml={2}>
+              <Typography className="size16 fontOnest" mb={1} >
                 Contraseña
               </Typography>
               <Input
@@ -293,13 +307,13 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
                 error={!!errors.password}
               />
               {errors.password && (
-                <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                <Typography color="error" className="size12 fontOnest" mt={0.5} >
                   {errors.password.message}
                 </Typography>
               )}
             </section>
             <section>
-              <Typography className="size16 fontOnest" mb={1} ml={2}>
+              <Typography className="size16 fontOnest" mb={1} >
                 Confirmar Contraseña
               </Typography>
               <Input
@@ -313,7 +327,7 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
                 error={!!errors.confirm_password}
               />
               {errors.confirm_password && (
-                <Typography color="error" className="size12 fontOnest" mt={0.5} ml={2}>
+                <Typography color="error" className="size12 fontOnest" mt={0.5} >
                   {errors.confirm_password.message}
                 </Typography>
               )}
@@ -323,7 +337,7 @@ const FormRegister = ({ setActions }: FormRegisterProps) => {
 
         <Box m={"20px 0"} className="formAuth__buttons">
           <MainButton
-            className="btnSimple size16 fontOnest"
+            className="btnOutline size16 fontOnest"
             text="Iniciar sesión"
             onClick={() => setActions("auth")}
           />

@@ -1,81 +1,119 @@
 import { Box, Grid, IconButton, Rating, Typography } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import "./comments.scss";
-import { testimonials } from "../../utils/utils";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { testimonials } from "../../utils/utils";
 import IconQuotes from "@/assets/icon/IconQuotes";
+import "./comments.scss";
 
 const Comments = () => {
-  const [index, setIndex] = useState<number>(0);
-
-  const handlePrev = () => {
-    setIndex((prev: number) => (prev === 0 ? testimonials.length - 1 : prev - 1));
-  };
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const itemsToShow = window.innerWidth > 1200 ? 3 : window.innerWidth > 900 ? 2 : 1;
 
   const handleNext = () => {
-    setIndex((prev: number) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+    setDirection(1);
+    setIndex((prev) => (prev + 1 >= testimonials.length ? 0 : prev + 1));
+  };
+
+  const handlePrev = () => {
+    setDirection(-1);
+    setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+  };
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 100 : -100,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction > 0 ? -100 : 100,
+      opacity: 0,
+    }),
   };
 
   return (
-    <Box className="Comments__container">
-      {/* TITLE */}
-      <Box sx={{ width: "30%" }}>
-        <Typography className="title size40 fontOnestSemiBold" mb={2}>
+    <Box className="Comments">
+      <Box className="Comments__header">
+        <Typography className="title size50 fontOnestBold">
           Testimonios que respaldan nuestro trabajo
         </Typography>
-        <Typography className="description size16 fontOnest" mb={8}>
-          Historias reales de tenderos y proveedores que ya hacen parte de esta red que crece cada
-          día.
+        <Typography className="description size18 fontOnest">
+          Historias reales de tenderos y proveedores que ya hacen parte de esta red.
         </Typography>
       </Box>
-      <Box>
-        <Grid container spacing={3}>
-          {/* Columna izquierda con título y flechas */}
-          <Grid size={{ xs: 12, md: 3 }}>
-            <Box className="Comments__box">
-              <IconQuotes height={"50px"} width={"50px"} />
-              <Typography className="title size40 fontOnestSemiBold">
-                Historias que <br /> nos motivan a seguir
-              </Typography>
-              <Box sx={{ position: "absolute", bottom: 20, right: 20 }}>
-                <IconButton onClick={handlePrev} size="small">
-                  <ArrowBackIosNewIcon fontSize="small" />
-                </IconButton>
-                <IconButton onClick={handleNext} size="small">
-                  <ArrowForwardIosIcon fontSize="small" />
-                </IconButton>
-              </Box>
-            </Box>
-          </Grid>
 
-          {/* Tarjetas de testimonios */}
-          {testimonials.slice(index, index + 3).map((t, i) => (
-            <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} key={i}>
-              <Box className="Comments__boxs">
-                <Rating value={t.rating} readOnly size="medium" sx={{ color: "var(--colorRed)" }} />
-                <Typography className="description size16 fontOnest" sx={{ mt: 2, mb: 2 }}>
-                  “{t.message}”
-                </Typography>
-                <Box display="flex" alignItems="center" gap={2}>
-                  <Box
-                    sx={{
-                      width: "30px",
-                      height: "30px",
-                      borderRadius: "50%",
-                      backgroundColor: "#90a4ae",
-                    }}
-                  />
-                  <Box>
-                    <Typography className="title size16 fontOnest">{t.name}</Typography>
-                    <Typography className="description size13 fontOnest">{t.role}</Typography>
-                  </Box>
-                </Box>
-              </Box>
-            </Grid>
-          ))}
+      <Grid container spacing={3}>
+        <Grid size={{ xs: 12, lg: 3 }}>
+          <Box className="Comments__info-box">
+            <IconQuotes height={"50px"} width={"50px"} color="var(--colorRed)" />
+            <Typography className="title size30 fontOnestSemiBold">
+              Historias que <br /> nos motivan
+            </Typography>
+
+            <Box className="controls">
+              <IconButton onClick={handlePrev} className="btn-nav">
+                <ArrowBackIosNewIcon fontSize="small" />
+              </IconButton>
+              <IconButton onClick={handleNext} className="btn-nav">
+                <ArrowForwardIosIcon fontSize="small" />
+              </IconButton>
+            </Box>
+          </Box>
         </Grid>
-      </Box>
+
+        <Grid size={{ xs: 12, lg: 9 }} sx={{ position: "relative", overflow: "hidden" }}>
+          <Box sx={{ display: "flex", gap: 3 }}>
+            <AnimatePresence mode="popLayout" custom={direction} initial={false}>
+              <Grid
+                container
+                spacing={3}
+                component={motion.div}
+                key={index} // 👈 La KEY debe estar en el contenedor que envuelve el slice
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 },
+                }}
+                sx={{ width: "100%" }}
+              >
+                {[...testimonials, ...testimonials]
+                  .slice(index, index + itemsToShow)
+                  .map((t, i) => (
+                    <Grid size={{ xs: 12, md: 6, lg: 4 }} key={`${t.name}-${i}`}>
+                      <Box className="testimonial-card">
+                        <Rating
+                          value={t.rating}
+                          readOnly
+                          sx={{ color: "var(--colorRed)", mb: 2 }}
+                        />
+                        <Typography className="text size15 fontOnest">“{t.message}”</Typography>
+                        <Box className="user-info">
+                          <Box className="avatar">{t.name.charAt(0)}</Box>
+                          <Box>
+                            <Typography className="name size16 fontOnestSemiBold">
+                              {t.name}
+                            </Typography>
+                            <Typography className="role size13 fontOnest">{t.role}</Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Grid>
+                  ))}
+              </Grid>
+            </AnimatePresence>
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

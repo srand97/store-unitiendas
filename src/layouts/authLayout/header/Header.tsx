@@ -1,4 +1,4 @@
-import { Box, Link, Typography } from "@mui/material";
+import { Box, Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 // IMPORTADOS
 import IconLogo from "@/assets/images/IconLogo.png";
@@ -12,7 +12,6 @@ const Header = () => {
       {/* Logo */}
       <Box className="logo" onClick={() => navigate("/inicio")}>
         <img src={IconLogo} alt="IconLogo" />
-        <Typography>Conocenos</Typography>
       </Box>
       {/* Search e Register/Login */}
       <Box className="menuLogin">
