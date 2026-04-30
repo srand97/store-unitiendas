@@ -1,6 +1,5 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { motion, Variants } from "framer-motion";
-import IconAdd from "@mui/icons-material/Add";
 import { ArrInfo } from "../../utils/utils";
 import "./aboutMe.scss";
 
