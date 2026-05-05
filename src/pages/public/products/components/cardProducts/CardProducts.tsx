@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 // IMPORTADOS
 import CustomImage from "@/components/customImage/CustomImage";
 import { MainButton } from "@/components/mainButton/MainButton";
@@ -8,7 +8,7 @@ import IconShop from "@/assets/icon/IconShop";
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import CheckIcon from "@mui/icons-material/Check";
-import { useAlertStore } from "@/store/alertStore";
+import { useCartStore } from "@/store/cartStore";
 
 interface ICardProduct {
   products: ProductsData;
@@ -19,22 +19,23 @@ interface ICardProduct {
 const CardProducts = ({ products, onClickView, onClickAdd }: ICardProduct) => {
   const isMobile = useMemo(() => window.innerWidth <= 768, []);
   const [isAdding, setIsAdding] = useState(false);
-  const { showAlert } = useAlertStore();
+
+  const { products: productsStore } = useCartStore();
 
   const onAddClick = () => {
     setIsAdding(true);
     onClickAdd?.();
-    setTimeout(() => setIsAdding(false), 1500);
-    showAlert({
-      type: "success",
-      title: "¡Añadido!",
-      message: `${products?.name} se agregó al carrito correctamente`,
-      duration: 2000,
-    });
+    setTimeout(() => {
+      setIsAdding(false);
+    }, 1000);
     if (navigator.vibrate) {
       navigator.vibrate(50);
     }
   };
+
+  const getQuantityProducts = useMemo(() => {
+    return productsStore.find((p) => p.id === products?.id)?.quantity || 0;
+  }, [productsStore]);
 
   return (
     <Box className="card-product">
@@ -63,10 +64,10 @@ const CardProducts = ({ products, onClickView, onClickAdd }: ICardProduct) => {
 
         <Box className="price-container">
           <Typography className="size18 fontOnestBold price-discount">
-            ${products?.unit_price_discount?.toLocaleString()}
+            ${products?.unit_price_discount}
           </Typography>
           <Typography className="size14 price-normal">
-            ${products?.normal_unit_price?.toLocaleString()}
+            ${products?.normal_unit_price}
           </Typography>
         </Box>
       </Box>
@@ -77,23 +78,21 @@ const CardProducts = ({ products, onClickView, onClickAdd }: ICardProduct) => {
           text={isMobile ? "Ver" : "Detalles"}
           onClick={onClickView}
         />
-        <MainButton
-          iconLeft={
-            <motion.div
-              key={isAdding ? "check" : "cart"}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-            >
-              {isAdding ? (
-                <CheckIcon sx={{ color: "var(--colorWhite)" }} />
-              ) : (
-                <IconShop height={22} width={22} color="var(--colorWhite)" />
-              )}
-            </motion.div>
-          }
-          className="btnRed"
-          onClick={onAddClick}
-        />
+        <IconButton className="btnRed" onClick={onAddClick}>
+          <motion.div
+            key={isAdding ? "check" : "cart"}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+          >
+            {isAdding ? (
+              <CheckIcon sx={{ color: "var(--colorWhite)" }} />
+            ) : getQuantityProducts > 0 ? (
+              <Typography className="size12 fontOnestBold quantity">{getQuantityProducts}</Typography>
+            ) : (
+              <IconShop height={22} width={22} color="var(--colorWhite)" />
+            )}
+          </motion.div>
+        </IconButton>
       </Box>
     </Box>
   );

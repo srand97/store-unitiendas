@@ -9,7 +9,6 @@ import { useProducts } from "../landing/components/ourProducts/hook/useProducts"
 import "./products.scss";
 import { useCartStore } from "@/store/cartStore";
 import { motion } from "framer-motion";
-import { useAlertStore } from "@/store/alertStore";
 
 // Skeleton Components
 const CategorySkeleton = () => (
@@ -42,7 +41,6 @@ const Products = () => {
   const navigate = useNavigate();
   const { listProducts, loading } = useProducts();
   const { addProduct } = useCartStore();
-  const { showAlert } = useAlertStore();
 
   const handleCategoryClick = (categoryName: string) => {
     const slug = categoryName.toLowerCase().replace(/\s+/g, "-");
@@ -65,17 +63,6 @@ const Products = () => {
       image: product.image,
       category: product.category,
     });
-
-    showAlert({
-      type: "success",
-      title: "¡Logrado!",
-      message: `${product.name} se agregó al carrito correctamente`,
-      duration: 2000,
-    });
-
-    if (navigator.vibrate) {
-      navigator.vibrate(50);
-    }
   };
 
   const handleNavigateDetail = (name: string, id: string) => {
@@ -83,6 +70,7 @@ const Products = () => {
       state: { product: { id, name } },
     });
   };
+
 
   const categories = useMemo(() => {
     return listProducts?.data || [];

@@ -1,93 +1,64 @@
 .AboutMe {
-  background-color: var(--colorWhite);
-
   &__header {
-    max-width: 650px; // En lugar de 35%, usamos max-width para mejor responsive
-    margin-bottom: 6rem;
-
+    margin-bottom: 4rem;
+    
     .title {
       color: var(--colorBlack);
-      margin-bottom: 1.5rem !important;
     }
-    .description {
-      color: var(--colorRed); // Un toque de color para destacar la propuesta de valor
-      margin-bottom: 1.5rem !important;
+    
+    .tagline {
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-size: 14px; // Estilo sutil pero potente
     }
-    .text {
-      color: var(--colorGrayDark);
-      line-height: 1.7;
-      margin-bottom: 2rem !important;
-    }
-  }
 
-  &__grid {
-    width: 100%;
+    .description {
+      color: var(--colorBlack);
+      max-width: 900px;
+    }
+
+    .text {
+      line-height: 1.6;
+      color: var(--colorGrayDark);
+    }
   }
 
   .about-card {
-    height: 100%;
+    background: var(--colorWhite);
     padding: 2rem;
-    background: var(--colorBlueLight);
-    border-radius: 16px;
+    border-radius: 20px;
+    height: 100%;
+    border: 1px solid var(--colorBlueLight);
+    transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: 1.5rem;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
 
     &:hover {
-      background: var(--colorWhite);
-      border-color: var(--colorGray);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border-color: var(--colorRed);
       transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
 
     .icon-wrapper {
-      background: var(--colorWhite);
       width: 50px;
       height: 50px;
+      background: var(--colorBlueLight);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 12px;
-      color: var(--colorRed);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
     }
 
     .content-wrapper {
       .title {
-        margin-bottom: 0.5rem !important;
+        margin-bottom: 0.5rem;
         color: var(--colorBlack);
       }
       .description {
         color: var(--colorGrayDark);
-        line-height: 1.5;
+        line-height: 1.4;
       }
-    }
-
-    // Usamos el botón simple que definimos al inicio
-    .btnSimple {
-      justify-content: flex-start;
-      padding: 0;
-      border-bottom: 1px solid transparent;
-      &:hover {
-        border-color: var(--colorRed);
-      }
-    }
-  }
-}
-
-// Responsive específico
-@media (max-width: 900px) {
-  .AboutMe {
-    padding: 4rem 1.5rem;
-    &__header {
-      max-width: 100%;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
   }
 }

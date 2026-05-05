@@ -1,9 +1,7 @@
-// src/pages/shoppingCart/components/PaymentForm.tsx
-import { Box, Input, MenuItem, Select, Typography } from "@mui/material";
+import { Box, MenuItem, Select, Typography, Grid, Input } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
+import { motion } from "framer-motion";
 import { MainButton } from "@/components/mainButton/MainButton";
-import { ENDPOINTS } from "@/utils/endpoints";
-import { useFetchSelects } from "@/pages/public/login/hook/useFetchSelects";
 
 interface PaymentFormData {
   // Pago y entrega
@@ -38,463 +36,248 @@ const PaymentForm = ({ onContinue, onBack }: PaymentFormProps) => {
     control,
     watch,
     formState: { errors },
-    trigger,
   } = useForm<PaymentFormData>({
     mode: "onChange",
     defaultValues: {
-      formaPago: "",
-      tipoEntrega: "",
-      puntoEntrega: "",
-      tipoDocumento: "",
       departamento: "atlantico",
-      municipio: "",
-      barrio: "",
+      tipoEntrega: "",
+      formaPago: "",
     },
-  });
-
-  const { list: identificationTypes } = useFetchSelects({
-    endpoint: ENDPOINTS.utils.identification_type,
-    transformData: (data) =>
-      data?.map((item) => ({
-        id: item?.id,
-        label: item?.name,
-        value: item?.code,
-      })),
   });
 
   const tipoEntrega = watch("tipoEntrega");
 
   const onSubmit = async (data: PaymentFormData) => {
-    const isValid = await trigger();
-    if (isValid) {
-      console.log("Formulario paso 3:", data);
-      onContinue();
-    }
+    console.log(data);
+    onContinue();
+  };
+
+  const sectionStyle = {
+    bgcolor: "white",
+    borderRadius: 4,
+    p: { xs: 3, md: 4 },
+    mb: 4,
+    border: "1px solid var(--colorBlueLight)",
+    transition: "all 0.3s ease",
+    "&:hover": { boxShadow: "0 10px 30px rgba(0,0,0,0.05)" },
   };
 
   return (
-    <Box sx={{ mt: 4 }}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* ── PAGO Y ENTREGA ── */}
-        <Box
-          sx={{
-            bgcolor: "white",
-            borderRadius: 3,
-            p: { xs: 2, md: 3 },
-            mb: 3,
-            boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-          }}
-        >
-          <Box display="grid" gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr" }} gap={3} mb={2}>
-            {/* Forma de pago */}
-            <Box>
+        {/* ── SECCIÓN 1: MÉTODO Y ENTREGA ── */}
+        <Box sx={sectionStyle}>
+          <Typography className="size20 fontOnestBold" mb={3}>
+            Preferencias de pedido
+          </Typography>
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Typography className="size14 fontOnestSemiBold" mb={1}>
                 Forma de pago
               </Typography>
               <Controller
                 name="formaPago"
                 control={control}
-                rules={{ required: "Selecciona una forma de pago" }}
+                rules={{ required: "Selecciona cómo deseas pagar" }}
                 render={({ field }) => (
                   <Select
                     {...field}
                     displayEmpty
-                    className={`${!field.value ? "placeholderSelect" : ""} select`}
+                    className="select"
+                    fullWidth
+                    error={!!errors.formaPago}
                   >
                     <MenuItem value="" disabled>
-                      Selecciona
+                      Selecciona método
                     </MenuItem>
-                    <MenuItem value="pse">PSE</MenuItem>
-                    <MenuItem value="tarjeta">Tarjeta crédito/débito</MenuItem>
-                    <MenuItem value="efectivo">Efectivo</MenuItem>
-                    <MenuItem value="nequi">Nequi</MenuItem>
+                    <MenuItem value="pse">PSE / Transferencia</MenuItem>
+                    <MenuItem value="tarjeta">Tarjeta de Crédito/Débito</MenuItem>
+                    <MenuItem value="efectivo">Efectivo contra entrega</MenuItem>
                   </Select>
                 )}
               />
               {errors.formaPago && (
-                <Typography color="error" className="size12" mt={0.5} ml={1}>
+                <Typography color="error" className="size12" mt={0.5}>
                   {errors.formaPago.message}
                 </Typography>
               )}
-            </Box>
+            </Grid>
 
-            {/* Tipo de entrega */}
-            <Box>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Typography className="size14 fontOnestSemiBold" mb={1}>
-                Tipo de entrega
+                ¿Cómo prefieres recibirlo?
               </Typography>
               <Controller
                 name="tipoEntrega"
                 control={control}
-                rules={{ required: "Selecciona un tipo de entrega" }}
+                rules={{ required: "Elige un método de entrega" }}
                 render={({ field }) => (
                   <Select
                     {...field}
                     displayEmpty
-                    className={`${!field.value ? "placeholderSelect" : ""} select`}
+                    className="select"
+                    fullWidth
+                    error={!!errors.tipoEntrega}
                   >
                     <MenuItem value="" disabled>
-                      Selecciona
+                      Selecciona entrega
                     </MenuItem>
-                    <MenuItem value="punto">Recoger en punto físico</MenuItem>
-                    <MenuItem value="domicilio">Domicilio</MenuItem>
+                    <MenuItem value="punto">Recoger en local</MenuItem>
+                    <MenuItem value="domicilio">Envío a domicilio</MenuItem>
                   </Select>
                 )}
               />
-              {errors.tipoEntrega && (
-                <Typography color="error" className="size12" mt={0.5} ml={1}>
-                  {errors.tipoEntrega.message}
-                </Typography>
-              )}
-            </Box>
-          </Box>
+            </Grid>
 
-          {/* Punto de entrega — solo si eligió punto físico */}
-          {tipoEntrega === "punto" && (
-            <Box>
-              <Typography className="size14 fontOnestSemiBold" mb={1}>
-                Punto de entrega
-              </Typography>
-              <Controller
-                name="puntoEntrega"
-                control={control}
-                rules={{ required: "Selecciona un punto de entrega" }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    displayEmpty
-                    sx={{ maxWidth: { md: "calc(50% - 12px)" } }}
-                    className={`${!field.value ? "placeholderSelect" : ""} select`}
-                  >
-                    <MenuItem value="" disabled>
-                      Selecciona
-                    </MenuItem>
-                    <MenuItem value="calle17">Calle 17 #13-123</MenuItem>
-                    <MenuItem value="carrera9">Carrera 9 #45-67</MenuItem>
-                  </Select>
-                )}
-              />
-              {errors.puntoEntrega && (
-                <Typography color="error" className="size12" mt={0.5} ml={1}>
-                  {errors.puntoEntrega.message}
-                </Typography>
-              )}
-              <Typography
-                className="size12 fontOnestSemiBold"
-                mt={1}
-                sx={{ color: "var(--colorRed, #e53935)" }}
-              >
-                Tu pedido puede ser recogido a más tardar 5 días hábiles
-              </Typography>
-            </Box>
-          )}
+            {tipoEntrega === "punto" && (
+              <Grid size={{ xs: 12 }}>
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                >
+                  <Typography className="size14 fontOnestSemiBold" mb={1} mt={2}>
+                    Punto de recogida disponible
+                  </Typography>
+                  <Controller
+                    name="puntoEntrega"
+                    control={control}
+                    rules={{ required: "Selecciona el punto de recogida" }}
+                    render={({ field }) => (
+                      <Select {...field} displayEmpty className="select" fullWidth>
+                        <MenuItem value="" disabled>
+                          Selecciona el punto
+                        </MenuItem>
+                        <MenuItem value="calle17">Sede Principal - Calle 17 #13-123</MenuItem>
+                      </Select>
+                    )}
+                  />
+                  <Box mt={1} p={1.5} bgcolor="var(--colorBlueLight)" borderRadius={2}>
+                    <Typography className="size12 fontOnestMedium" color="var(--colorRed)">
+                      * Tendrás 5 días hábiles para retirar tu pedido una vez confirmado.
+                    </Typography>
+                  </Box>
+                </motion.div>
+              </Grid>
+            )}
+          </Grid>
         </Box>
 
-        {/* ── DATOS PERSONALES ── */}
-        <Box
-          sx={{
-            bgcolor: "white",
-            borderRadius: 3,
-            p: { xs: 2, md: 3 },
-            mb: 3,
-            boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-          }}
-        >
+        {/* ── SECCIÓN 2: DATOS PERSONALES ── */}
+        <Box sx={sectionStyle}>
           <Typography className="size20 fontOnestBold" mb={3}>
-            Datos personales
+            Información del comprador
           </Typography>
-
-          <Box display="grid" gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr" }} gap={3}>
-            {/* Nombres */}
-            <Box>
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Typography className="size14 fontOnestSemiBold" mb={1}>
                 Nombres
               </Typography>
               <Input
-                placeholder="Escriba sus nombres"
-                {...register("nombres", { required: "El nombre es obligatorio" })}
-                error={!!errors.nombres}
                 className="input"
+                placeholder="Juan"
+                {...register("nombres", { required: "Campo requerido" })}
+                error={!!errors.nombres}
               />
-              {errors.nombres && (
-                <Typography color="error" className="size12" mt={0.5} ml={1}>
-                  {errors.nombres.message}
-                </Typography>
-              )}
-            </Box>
-
-            {/* Apellidos */}
-            <Box>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Typography className="size14 fontOnestSemiBold" mb={1}>
                 Apellidos
               </Typography>
               <Input
-                placeholder="Escriba sus apellidos"
-                {...register("apellidos", { required: "El apellido es obligatorio" })}
+                className="input"
+                placeholder="Pérez"
+                {...register("apellidos", { required: "Campo requerido" })}
                 error={!!errors.apellidos}
-                className="input"
               />
-              {errors.apellidos && (
-                <Typography color="error" className="size12" mt={0.5} ml={1}>
-                  {errors.apellidos.message}
-                </Typography>
-              )}
-            </Box>
-
-            {/* Tipo de documento */}
-            <Box>
-              <Typography className="size16 fontOnest" mb={1} ml={2}>
-                Tipo de documento
-              </Typography>
-              <Controller
-                name="tipoDocumento"
-                control={control}
-                rules={{ required: "El tipo de documento es requerido" }}
-                render={({ field, fieldState }) => (
-                  <Select
-                    {...field}
-                    className={`${!field.value ? "placeholderSelect" : ""} select`}
-                    error={!!fieldState.error}
-                    value={field.value || ""}
-                    displayEmpty
-                  >
-                    <MenuItem value="" disabled>
-                      Selecciona una opción
-                    </MenuItem>
-                    {identificationTypes?.map((element) => (
-                      <MenuItem value={element.value} key={element.id}>
-                        {element.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )}
-              />
-              {errors.tipoDocumento && (
-                <Typography color="error" className="size12" mt={0.5} ml={1}>
-                  {errors.tipoDocumento.message}
-                </Typography>
-              )}
-            </Box>
-
-            {/* Número de documento */}
-            <Box>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Typography className="size14 fontOnestSemiBold" mb={1}>
-                Número de documento
+                Correo
               </Typography>
               <Input
-                placeholder="Escriba su número de documento"
-                {...register("numeroDocumento", {
-                  required: "El número de documento es obligatorio",
-                  pattern: { value: /^[0-9]+$/, message: "Solo se permiten números" },
-                })}
-                error={!!errors.numeroDocumento}
                 className="input"
-              />
-              {errors.numeroDocumento && (
-                <Typography color="error" className="size12" mt={0.5} ml={1}>
-                  {errors.numeroDocumento.message}
-                </Typography>
-              )}
-            </Box>
-
-            {/* Correo */}
-            <Box>
-              <Typography className="size14 fontOnestSemiBold" mb={1}>
-                Correo electrónico
-              </Typography>
-              <Input
-                placeholder="ejemplo@dominio.com"
-                {...register("correo", {
-                  required: "El correo es obligatorio",
-                  pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Correo inválido" },
-                })}
+                type="email"
+                placeholder="correo@ejemplo.com"
+                {...register("correo", { required: "Email requerido" })}
                 error={!!errors.correo}
-                className="input"
               />
-              {errors.correo && (
-                <Typography color="error" className="size12" mt={0.5} ml={1}>
-                  {errors.correo.message}
-                </Typography>
-              )}
-            </Box>
-
-            {/* Teléfono */}
-            <Box>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Typography className="size14 fontOnestSemiBold" mb={1}>
                 Teléfono
               </Typography>
               <Input
-                placeholder="Escriba su número de telefono"
-                {...register("telefono", {
-                  required: "El teléfono es obligatorio",
-                  pattern: {
-                    value: /^[0-9]{10}$/,
-                    message: "Ingresa un teléfono válido de 10 dígitos",
-                  },
-                })}
-                error={!!errors.telefono}
                 className="input"
+                placeholder="300 000 0000"
+                {...register("telefono", { required: "Teléfono requerido" })}
+                error={!!errors.telefono}
               />
-              {errors.telefono && (
-                <Typography color="error" className="size12" mt={0.5} ml={1}>
-                  {errors.telefono.message}
-                </Typography>
-              )}
-            </Box>
-          </Box>
+            </Grid>
+          </Grid>
         </Box>
 
-        {/* ── DATOS DE ENTREGA — solo si eligió domicilio ── */}
+        {/* ── SECCIÓN 3: DIRECCIÓN (DINÁMICA) ── */}
         {tipoEntrega === "domicilio" && (
-          <Box
-            sx={{
-              bgcolor: "white",
-              borderRadius: 3,
-              p: { xs: 2, md: 3 },
-              mb: 3,
-              boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-            }}
-          >
-            <Typography className="size20 fontOnestBold" mb={3}>
-              Datos de entrega
-            </Typography>
-
-            <Box display="grid" gridTemplateColumns={{ xs: "1fr", md: "1fr 1fr" }} gap={3}>
-              {/* Nombre de la tienda */}
-              <Box>
-                <Typography className="size14 fontOnestSemiBold" mb={1}>
-                  Nombre de la tienda
-                </Typography>
-                <Input
-                  placeholder="Escriba el nombre de la tienda"
-                  {...register("nombreTienda", {
-                    required: "El nombre de la tienda es obligatorio",
-                  })}
-                  error={!!errors.nombreTienda}
-                  className="input"
-                />
-                {errors.nombreTienda && (
-                  <Typography color="error" className="size12" mt={0.5} ml={1}>
-                    {errors.nombreTienda.message}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <Box sx={sectionStyle}>
+              <Typography className="size20 fontOnestBold" mb={3}>
+                Dirección de envío
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid size={{ xs: 12, md: 8 }}>
+                  <Typography className="size14 fontOnestSemiBold" mb={1}>
+                    Dirección exacta
                   </Typography>
-                )}
-              </Box>
-
-              {/* Departamento */}
-              <Box>
-                <Typography className="size14 fontOnestSemiBold" mb={1}>
-                  Departamento
-                </Typography>
-                <Controller
-                  name="departamento"
-                  control={control}
-                  rules={{ required: "Selecciona un departamento" }}
-                  render={({ field }) => (
-                    <Select {...field} disabled className="select" value="atlantico">
-                      <MenuItem value="atlantico">Atlántico</MenuItem>
-                    </Select>
-                  )}
-                />
-                {errors.departamento && (
-                  <Typography color="error" className="size12" mt={0.5} ml={1}>
-                    {errors.departamento.message}
+                  <Input
+                    className="input"
+                    placeholder="Calle, número, apto..."
+                    {...register("direccion", { required: "Obligatorio" })}
+                    error={!!errors.direccion}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 4 }}>
+                  <Typography className="size14 fontOnestSemiBold" mb={1}>
+                    Barrio
                   </Typography>
-                )}
-              </Box>
-
-              {/* Municipio */}
-              <Box>
-                <Typography className="size14 fontOnestSemiBold" mb={1}>
-                  Municipio
-                </Typography>
-                <Controller
-                  name="municipio"
-                  control={control}
-                  rules={{ required: "Selecciona un municipio" }}
-                  render={({ field }) => (
-                    <Select {...field} displayEmpty className="select">
-                      <MenuItem value="" disabled>
-                        Selecciona
-                      </MenuItem>
-                      s<MenuItem value="soledad">Soledad</MenuItem>
-                      <MenuItem value="barranquilla">Barranquilla</MenuItem>
-                      <MenuItem value="malambo">Malambo</MenuItem>
-                      <MenuItem value="galapa">Galapa</MenuItem>
-                    </Select>
-                  )}
-                />
-                {errors.municipio && (
-                  <Typography color="error" className="size12" mt={0.5} ml={1}>
-                    {errors.municipio.message}
+                  <Input
+                    className="input"
+                    placeholder="Nombre del barrio"
+                    {...register("barrio", { required: "Obligatorio" })}
+                    error={!!errors.barrio}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <Typography className="size14 fontOnestSemiBold" mb={1}>
+                    Notas adicionales (opcional)
                   </Typography>
-                )}
-              </Box>
-
-              {/* Barrio */}
-              <Box>
-                <Typography className="size14 fontOnestSemiBold" mb={1}>
-                  Barrio
-                </Typography>
-                <Input
-                  placeholder="Escriba el nombre de el barrio"
-                  {...register("barrio", {
-                    required: "El barrio es obligatorio",
-                  })}
-                  error={!!errors.barrio}
-                  className="input"
-                />
-                {errors.barrio && (
-                  <Typography color="error" className="size12" mt={0.5} ml={1}>
-                    {errors.barrio.message}
-                  </Typography>
-                )}
-              </Box>
-
-              {/* Dirección */}
-              <Box>
-                <Typography className="size14 fontOnestSemiBold" mb={1}>
-                  Dirección
-                </Typography>
-                <Input
-                  placeholder="Escriba su dirección"
-                  {...register("direccion", { required: "La dirección es obligatoria" })}
-                  error={!!errors.direccion}
-                  className="input"
-                />
-                {errors.direccion && (
-                  <Typography color="error" className="size12" mt={0.5} ml={1}>
-                    {errors.direccion.message}
-                  </Typography>
-                )}
-              </Box>
-
-              {/* Indicaciones */}
-              <Box>
-                <Typography className="size14 fontOnestSemiBold" mb={1}>
-                  Indicaciones
-                </Typography>
-                <Input
-                  placeholder="Escriba un punto de referencia"
-                  {...register("indicaciones")}
-                  className="input"
-                />
-              </Box>
+                  <Input
+                    className="input"
+                    placeholder="Ej: Portería, casa de rejas blancas..."
+                    {...register("indicaciones")}
+                  />
+                </Grid>
+              </Grid>
             </Box>
-          </Box>
+          </motion.div>
         )}
 
-        {/* Botón confirmar */}
-        <Box display="flex" justifyContent="space-between" mt={2}>
-          <MainButton text="Atrás" className="btnRed" sx={{ px: 4, py: 1.2 }} onClick={onBack} />
+        {/* ── ACCIONES ── */}
+        <Box display="flex" justifyContent="space-between" mt={4} mb={6}>
+          <MainButton
+            text="Volver al carrito"
+            className="btnOutline"
+            onClick={onBack}
+            sx={{ px: 4 }}
+          />
           <MainButton
             type="submit"
-            text="Confirmar y continuar"
+            text="Finalizar Pedido"
             className="btnRed"
-            sx={{ px: 4, py: 1.2 }}
+            sx={{ px: 6, py: 1.5 }}
           />
         </Box>
       </form>
-    </Box>
+    </motion.div>
   );
 };
 

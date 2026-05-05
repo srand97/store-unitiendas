@@ -23,16 +23,12 @@ const CardInfo = ({ icon: Icon, title, description, index }: any) => (
     className="about-card"
   >
     <Box className="icon-wrapper">
-      <Icon />
+      <Icon sx={{ fontSize: 30, color: "var(--colorRed)" }} />
     </Box>
     <Box className="content-wrapper">
       <Typography className="fontOnestSemiBold size18 title">{title}</Typography>
       <Typography className="fontOnest size15 description">{description}</Typography>
     </Box>
-    {/* <Button className="btnOutline size14">
-      <IconAdd sx={{ fontSize: 18 }} />
-      Saber más
-    </Button> */}
   </Box>
 );
 
@@ -46,22 +42,39 @@ const AboutMe = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <Typography className="fontOnestBold size50 title">¿Quiénes Somos?</Typography>
-          <Typography className="fontOnestSemiBold size20 description">
-            Uni Tiendas conecta a tenderos con proveedores de productos esenciales.
+          <Typography className="fontOnestBold size50 title" sx={{ mb: 1 }}>
+            ¿Quiénes Somos?
           </Typography>
-          <Typography className="fontOnest size16 text">
-            Buscamos construir una red de colaboración que permita a ambos crecer: los tenderos
-            acceden a mejores precios y condiciones, y los proveedores amplían su alcance de forma
-            directa y sostenible.
+
+          <Typography
+            className="fontOnestBold size20 tagline"
+            sx={{ color: "var(--colorRed)", mb: 3 }}
+          >
+            Unitiendas, un corazón en cada esquina.
           </Typography>
-          <Button className="btnRed size16" sx={{ mt: 2 }}>
-            Quiero saber más
+
+          <Typography
+            className="fontOnestSemiBold size20 description"
+            sx={{ mb: 2, lineHeight: 1.4 }}
+          >
+            Conectamos la tradicional tienda de barrio con la empresa productora, sin intermediarios
+            y con una logística inteligente.
+          </Typography>
+
+          <Typography className="fontOnest size16 text" sx={{ opacity: 0.9, maxWidth: "800px" }}>
+            Estamos construyendo la red de colaboración que permita a ambos crecer. Los tenderos
+            acceden a mejores precios y condiciones, y las empresas amplían su alcance de forma
+            directa y sostenible. Creemos en el valor de las alianzas que impulsan negocios y
+            comunidades.
+          </Typography>
+
+          <Button className="btnRed size16" sx={{ mt: 4, px: 4 }}>
+            Conocer nuestra red
           </Button>
         </motion.div>
       </Box>
 
-      <Grid container spacing={4} className="AboutMe__grid">
+      <Grid container spacing={3} className="AboutMe__grid" sx={{ mt: 6 }}>
         {ArrInfo?.map((item, index) => (
           <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2.4 }} key={index}>
             <CardInfo

@@ -4,11 +4,14 @@ import { useEffect, useMemo } from "react";
 import "./categoryDetail.scss";
 import { useProducts } from "@/pages/public/landing/components/ourProducts/hook/useProducts";
 import CardProducts from "../cardProducts/CardProducts";
+import { useCartStore } from "@/store/cartStore";
+import { ProductsData } from "@/pages/public/landing/components/ourProducts/types/typesProducts";
 
 const CategoryDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { listProducts, loading } = useProducts();
+  const { addProduct } = useCartStore();
 
   useEffect(() => {
     window.scrollTo({
@@ -17,6 +20,23 @@ const CategoryDetail = () => {
     });
   }, []);
 
+  const handleNavigateDetail = (name: string, id: string) => {
+    navigate(`/productos/${name.toLowerCase().replace(/\s+/g, "-")}`, {
+      state: { product: { id, name } },
+    });
+  };
+
+  const handleAddToCart = (product: ProductsData, qty: number = 1) => {
+    addProduct({
+      id: product.id,
+      name: product.name,
+      normalPrice: product.normal_unit_price,
+      priceDiscount: product.unit_price_discount,
+      image: product.image,
+      category: product.category,
+      quantity: qty,
+    });
+  };
   // Buscamos la categoría específica dentro de la data
   const categoryData = useMemo(() => {
     return listProducts?.data?.find(
@@ -52,9 +72,8 @@ const CategoryDetail = () => {
           <Grid size={{ xs: 6, sm: 4, md: 3, lg: 2.4 }} key={product.id}>
             <CardProducts
               products={product}
-              onClickView={() =>
-                navigate(`/productos/${product.name.toLowerCase().replace(/\s+/g, "-")}`)
-              }
+              onClickView={() => handleNavigateDetail(product.name, product.id)}
+              onClickAdd={() => handleAddToCart(product)}
             />
           </Grid>
         ))}

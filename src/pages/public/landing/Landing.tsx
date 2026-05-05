@@ -13,16 +13,15 @@ import { motion } from "framer-motion";
 
 const items = [
   {
-    text: "Mejores precios.",
+    text: "Mejores precios en tus productos, más ventas para tu negocio.",
   },
   {
-    text: "Más ventas.",
+    text: "Logística inteligente, baja tus costos, aumenta tus ganancias.",
   },
   {
-    text: "Más oportunidades.",
+    text: "Primera comunidad de tenderos del Atlántico.",
   },
 ];
-
 const itemVariants = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
@@ -51,14 +50,29 @@ const Landing = () => {
       </Box>
 
       <Box sx={{ padding: "2rem 0", borderBottom: "0.5px solid var(--colorGray)" }}>
+        {/* FRASE INICIAL */}
         <Typography
+          className="fontOnestBold"
+          sx={{
+            fontSize: "14px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "var(--colorRed)", // Rojo para resaltar al protagonista
+            mb: 1,
+            ml: 4,
+          }}
+        >
+          Amigo tendero
+        </Typography>
+
+        <Typography
+          className="fontOnestMedium"
           sx={{
             fontSize: "11px",
-            fontWeight: 500,
             letterSpacing: "0.08em",
             textTransform: "uppercase",
             color: "text.secondary",
-            mb: 2,
+            mb: 4,
             ml: 4,
           }}
         >
@@ -78,10 +92,11 @@ const Landing = () => {
               key={index}
               size={{ xs: 12, md: 4 }}
               display="flex"
-              alignItems="center"
-              justifyContent={"center"}
+              flexDirection={{ xs: "column", md: "column", lg: "row" }}
+              alignItems="flex-start"
+              justifyContent={"flex-start"}
               gap={2}
-              p={{ xs: "1.2rem 1.5rem", md: "1.5rem 2rem" }}
+              p={{ xs: "2rem 1.5rem", md: "2rem 3rem" }}
               sx={{
                 borderRight: {
                   md: index < items.length - 1 ? "0.5px solid var(--colorGray)" : "none",
@@ -93,7 +108,6 @@ const Landing = () => {
               }}
               component={motion.div}
               variants={itemVariants}
-              transition={{ duration: 0.5, ease: "easeOut" }}
             >
               <Box
                 component={motion.div}
@@ -107,14 +121,22 @@ const Landing = () => {
                   stiffness: 200,
                 }}
                 sx={{
-                  width: 10,
-                  height: 10,
-                  minWidth: 10,
+                  width: 12,
+                  height: 12,
                   borderRadius: "50%",
                   background: "var(--colorRed)",
+                  mb: 1,
                 }}
               />
-              <Typography className="size40 fontOnestSemiBold">{element.text}</Typography>
+              <Typography
+                className="size24 fontOnestSemiBold"
+                sx={{
+                  lineHeight: 1.3,
+                  color: "var(--colorBlack)",
+                }}
+              >
+                {element.text}
+              </Typography>
             </Grid>
           ))}
         </Grid>

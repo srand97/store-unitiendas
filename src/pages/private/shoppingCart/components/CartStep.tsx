@@ -2,9 +2,10 @@ import IconTrash from "@/assets/icon/IconTrash";
 import { Counter } from "@/components/counter/Counter";
 import CustomImage from "@/components/customImage/CustomImage";
 import { MainButton } from "@/components/mainButton/MainButton";
-import { CartProduct, useCartStore } from "@/store/cartStore";
-import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Grid, IconButton, Typography, Divider, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCartStore } from "@/store/cartStore";
 
 interface CartStepProps {
   onContinue: () => void;
@@ -14,203 +15,152 @@ const CartStep = ({ onContinue }: CartStepProps) => {
   const { products, totalPrice, updateQuantity, removeProduct } = useCartStore();
   const navigate = useNavigate();
 
-  const formatPrice = (price: number | string) => {
-    const numeric =
-      typeof price === "string" ? parseFloat(price.replace(/\./g, "").replace(",", ".")) : price;
-
-    return Math.round(numeric)
-      .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
-
-  const calculateDiscount = () => {
-    const total = products.reduce((acc, product) => {
-      return acc + (product.priceDiscount ?? 0);
-    }, 0);
-    return Math.round(total * 100) / 100;
-  };
-
-  const discount = calculateDiscount();
-
-  const CardDetailProduct = ({ item }: { item: CartProduct }) => {
-    return (
-      <Box display={"flex"} gap={3}>
-        {/* IMAGE */}
-        <Box
-          sx={{
-            width: { xs: "80px", sm: "100px", md: "120px" },
-            height: { xs: "80px", sm: "100px", md: "120px" },
-            flexShrink: 0,
-          }}
-        >
-          {item.image ? (
-            <CustomImage
-              src={item.image}
-              alt={`imagen ${item.name}`}
-              height={"100%"}
-              radius="10px"
-            />
-          ) : (
-            <Box
-              sx={{
-                width: "100%",
-                height: "100%",
-                bgcolor: "grey.100",
-                borderRadius: "10px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography fontSize={11} color="text.disabled">
-                Sin imagen
-              </Typography>
-            </Box>
-          )}
-        </Box>
-
-        {/* INFO */}
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          justifyContent={"space-between"}
-          p={"5px 0"}
-          sx={{ flex: 1 }}
-        >
-          {item.category && (
-            <Typography className="size11 fontOnestSemiBold">{item.category}</Typography>
-          )}
-          <Typography className="size16 fontOnestBold">{item.name}</Typography>
-          {item.weight && <Typography className="size16">{item.weight}</Typography>}
-          <Box display={"flex"} gap={2} mt={0.5} sx={{ flexWrap: "wrap" }}>
-            <Typography className="size16 fontOnestBold">
-              ${formatPrice(item.normalPrice)}
-            </Typography>
-            {item.priceDiscount !== undefined && (
-              <Typography
-                className="size16 fontOnestBold"
-                sx={{ textDecoration: "line-through", color: "var(--colorGrayDark)" }}
-              >
-                ${formatPrice(item.priceDiscount)}
-              </Typography>
-            )}
-          </Box>
-        </Box>
-
-        {/* ACTIONS */}
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          justifyContent={"start"}
-          alignItems={"end"}
-          gap={2}
-        >
-          <IconButton onClick={() => removeProduct(item.id)}>
-            <IconTrash />
-          </IconButton>
-          <Counter
-            initialValue={item.quantity}
-            onValueChange={(newQty: number) => updateQuantity(item.id, newQty)}
-          />
-        </Box>
-      </Box>
-    );
-  };
+  // Calculamos el descuento real basado en la diferencia de precios
+  const totalSavings = products.reduce((acc, item) => {
+    if (item.priceDiscount) {
+      return acc + (item.normalPrice - item.priceDiscount) * item.quantity;
+    }
+    return acc;
+  }, 0);
 
   if (products.length === 0) {
     return (
-      <Box sx={{ textAlign: "center", mt: 10 }}>
-        <Typography className="size20 fontOnestSemiBold" color="text.secondary">
-          Tu carrito está vacío
-        </Typography>
-        <MainButton
-          text="Ver productos"
-          onClick={() => navigate("/productos")}
-          sx={{ mt: 3 }}
-          className="btnRed"
-        />
+      <Box className="cart-empty-state">
+        <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+          <Typography className="size24 fontOnestBold">Tu carrito está vacío</Typography>
+          <Typography className="size16 fontOnest" sx={{ mb: 4, color: "text.secondary" }}>
+            Parece que aún no has agregado nada a tu pedido.
+          </Typography>
+          <MainButton
+            text="Ir a la tienda"
+            onClick={() => navigate("/productos")}
+            className="btnRed"
+          />
+        </motion.div>
       </Box>
     );
   }
 
   return (
-    <Grid container spacing={2} mt={4}>
-      {/* LISTA DE PRODUCTOS */}
-      <Grid size={{ sm: 12, md: 8 }} className="card-grid">
-        <Typography className="size20 fontOnestBold">Productos</Typography>
-        {products.map((product) => (
-          <Box key={product.id} className="card-product-detail">
-            <CardDetailProduct item={product} />
-          </Box>
-        ))}
+    <Grid container spacing={4} mt={2}>
+      {/* COLUMNA IZQUIERDA: LISTA */}
+      <Grid size={{ xs: 12, md: 8 }}>
+        <Typography className="size20 fontOnestBold" mb={3}>
+          Productos ({products.length})
+        </Typography>
+
+        <Box className="cart-items-list">
+          <AnimatePresence mode="popLayout">
+            {products.map((item) => (
+              <motion.div
+                key={item.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                className="cart-item-card"
+              >
+                <Grid container spacing={2} alignItems="center">
+                  <Grid size={{ xs: 3, sm: 2 }}>
+                    <CustomImage
+                      src={item.image}
+                      alt={item.name}
+                      height={80}
+                      width={80}
+                      radius="12px"
+                      objectFit="contain"
+                    />
+                  </Grid>
+
+                  <Grid size={{ xs: 6, sm: 7 }}>
+                    <Typography className="size12 fontOnestSemiBold" color="var(--colorRed)">
+                      {item.category}
+                    </Typography>
+                    <Typography className="size16 fontOnestBold">{item.name}</Typography>
+                    <Typography className="size14 fontOnest" color="text.secondary">
+                      {item.weight}
+                    </Typography>
+
+                    <Box display="flex" gap={1} alignItems="center" mt={1}>
+                      <Typography className="size16 fontOnestBold">
+                        ${item.priceDiscount || item.normalPrice}
+                      </Typography>
+                      {item.priceDiscount && (
+                        <Typography
+                          className="size12"
+                          sx={{ textDecoration: "line-through", color: "text.disabled" }}
+                        >
+                          ${item.normalPrice}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+
+                  <Grid size={{ xs: 3, sm: 3 }} sx={{ textAlign: "right" }}>
+                    <IconButton onClick={() => removeProduct(item.id)} sx={{ mb: 1 }}>
+                      <IconTrash color="var(--colorGrayDark)" />
+                    </IconButton>
+                    <Counter
+                      initialValue={item.quantity}
+                      onValueChange={(val) => updateQuantity(item.id, val)}
+                    />
+                  </Grid>
+                </Grid>
+                <Divider sx={{ mt: 2, borderColor: "var(--colorBlueLight)" }} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </Box>
       </Grid>
 
-      {/* RESUMEN */}
-      <Grid size={{ sm: 12, md: 4 }} className="card-grid-summary">
-        <Box>
-          <Typography className="size20 fontOnestBold">Resumen</Typography>
-          {products.map((product) => (
-            <Box
-              display={"flex"}
-              justifyContent={"space-between"}
-              mt={0.5}
-              key={`resumen-${product.id}`}
-            >
-              <Typography className="size14">
-                {product.name}{" "}
-                <Typography component="span" className="size12" color="text.secondary">
-                  x{product.quantity}
-                </Typography>
-              </Typography>
-              <Box display={"flex"} gap={2}>
-                {product.priceDiscount !== undefined && (
-                  <Typography
-                    className="size14 fontOnestBold"
-                    sx={{ color: "var(--colorGrayDark)", textDecoration: "line-through" }}
-                  >
-                    COP {formatPrice(product.priceDiscount * product.quantity)}
-                  </Typography>
-                )}
-                <Typography className="size14 fontOnestBold">
-                  COP {formatPrice(product.normalPrice * product.quantity)}
-                </Typography>
+      {/* COLUMNA DERECHA: RESUMEN (STICKY) */}
+      <Grid size={{ xs: 12, md: 4 }}>
+        <Box className="cart-summary-card">
+          <Typography className="size20 fontOnestBold" mb={3}>
+            Resumen de compra
+          </Typography>
+
+          <Stack spacing={2}>
+            <Box display="flex" justifyContent="space-between">
+              <Typography className="fontOnest">Subtotal</Typography>
+              <Typography className="fontOnestSemiBold">${totalPrice()}</Typography>
+            </Box>
+
+            {totalSavings > 0 && (
+              <Box display="flex" justifyContent="space-between" sx={{ color: "var(--colorRed)" }}>
+                <Typography className="fontOnest">Descuento aplicado</Typography>
+                <Typography className="fontOnestSemiBold">- ${totalSavings}</Typography>
               </Box>
+            )}
+
+            <Box display="flex" justifyContent="space-between">
+              <Typography className="fontOnest">Envío</Typography>
+              <Typography className="fontOnestSemiBold" color="success.main">
+                Gratis
+              </Typography>
             </Box>
-          ))}
-        </Box>
 
-        <Box>
-          <Box sx={{ borderTop: "1px solid var(--colorGray)", my: 2 }} />
+            <Divider sx={{ my: 1 }} />
 
-          {/* Subtotal */}
-          <Box display={"flex"} justifyContent={"space-between"}>
-            <Typography className="size16 fontOnestSemiBold">Subtotal</Typography>
-            <Typography className="size16 fontOnestBold">
-              COP {formatPrice(totalPrice())}
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <Typography className="size18 fontOnestBold">Total</Typography>
+              <Typography className="size22 fontOnestBold" color="var(--colorBlack)">
+                ${totalPrice() - totalSavings}
+              </Typography>
+            </Box>
+
+            <MainButton
+              onClick={onContinue}
+              text="Continuar al pago"
+              className="btnRed"
+              fullWidth
+              sx={{ py: 2, mt: 2 }}
+            />
+
+            <Typography className="size12 fontOnest" textAlign="center" color="text.secondary">
+              Impuestos incluidos en el precio
             </Typography>
-          </Box>
-
-          {/* Descuento */}
-          {discount > 0 && (
-            <Box display={"flex"} justifyContent={"space-between"} mb={2}>
-              <Typography
-                className="size12 fontOnestSemiBold"
-                sx={{ color: "var(--colorGrayDark)" }}
-              >
-                Descuento total
-              </Typography>
-              <Typography className="size12 fontOnestBold" sx={{ color: "var(--colorGrayDark)" }}>
-                COP {formatPrice(discount)}
-              </Typography>
-            </Box>
-          )}
-
-          <MainButton
-            onClick={onContinue}
-            sx={{ width: "100%", mt: 2 }}
-            text="Continuar"
-            className="btnRed"
-          />
+          </Stack>
         </Box>
       </Grid>
     </Grid>

@@ -1,28 +1,92 @@
-.cardBarProgress {
-  background: var(--colorBlueLight);
-  padding: 20px;
-  border-radius: 25px;
-}
+.ShoppingCart {
+  padding: 3rem 3%;
+  min-height: 80vh;
 
-.card-grid {
-  background: var(--colorBlueLight);
-  padding: 15px;
-  border-radius: 25px;
-
-  .card-product-detail {
-    border: 1px solid var(--colorGray);
-    border-radius: 20px;
-    padding: 10px;
-    margin-top: 10px;
+  @media (max-width: 600px) {
+    padding: 1.5rem 1rem;
   }
-}
 
-.card-grid-summary {
-  background: var(--colorBlueLight) !important;
-  padding: 15px;
-  border-radius: 25px;
-  max-height: 450px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
+  .cardBarProgress {
+    background: var(--colorBlueLight);
+    padding: 2rem;
+    border-radius: 20px;
+    margin-bottom: 3rem;
+
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background-color: var(--colorGray);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .progress__line {
+      height: 100%;
+      background-color: var(--colorRed);
+      border-radius: 10px;
+    }
+
+    .step-labels {
+      display: flex;
+      justify-content: space-between;
+
+      .label {
+        font-size: 14px;
+        font-family: "Onest-SemiBold";
+        color: var(--colorGrayDark);
+        transition: color 0.3s ease;
+
+        &.active {
+          color: var(--colorBlack);
+        }
+
+        @media (max-width: 600px) {
+          font-size: 11px; // En móvil se achican las etiquetas
+        }
+      }
+    }
+  }
+
+  .step-content-wrapper {
+    position: relative;
+    width: 100%;
+
+    //Listado de productos
+    .cart-items-list {
+      background: #fff;
+      border-radius: 20px;
+      padding: 1rem;
+    }
+
+    .cart-item-card {
+      padding: 1.5rem 0;
+      &:last-child hr {
+        display: none;
+      }
+    }
+
+    .cart-summary-card {
+      background: var(--colorBlueLight);
+      padding: 2rem;
+      border-radius: 25px;
+      position: sticky;
+      top: 100px; // Se queda fijo al hacer scroll
+
+      @media (max-width: 900px) {
+        position: static;
+        margin-top: 2rem;
+      }
+    }
+
+    .cart-empty-state {
+      text-align: center;
+      padding: 5rem 2rem;
+      background: var(--colorBlueLight);
+      border-radius: 30px;
+      margin-top: 2rem;
+    }
+
+    // formulario de pago
+  }
 }

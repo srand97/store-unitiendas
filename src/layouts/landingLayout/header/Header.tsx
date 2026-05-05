@@ -59,7 +59,10 @@ const Header = () => {
       </Box>
 
       {/* Logo */}
-      <Box className="logo" onClick={() => navigate(home)}>
+      <Box className="logo" onClick={() => {
+        navigate(home);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }}>
         <img src={IconLogo} alt="IconLogo" />
       </Box>
 
@@ -220,6 +223,7 @@ const Header = () => {
                   onClick={() => {
                     navigate(home);
                     toggleMobileMenu();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                 >
                   <Typography
@@ -423,7 +427,7 @@ const Header = () => {
                 {/* Subtotal + eliminar */}
                 <Box sx={{ textAlign: "right", flexShrink: 0 }}>
                   <Typography fontSize={13} fontWeight={700}>
-                    ${(item?.normalPrice * item.quantity).toFixed(2)}
+                    ${item?.normalPrice * item.quantity}
                   </Typography>
                   <IconButton
                     size="small"
@@ -454,7 +458,7 @@ const Header = () => {
                 Total
               </Typography>
               <Typography fontSize={14} fontWeight={700} color="primary">
-                ${totalPrice().toFixed(2)}
+                ${totalPrice()}
               </Typography>
             </Box>
             <MainButton

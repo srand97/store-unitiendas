@@ -1,4 +1,14 @@
-import { Box, Breadcrumbs, Divider, Grid, Link, Typography, Skeleton, Alert } from "@mui/material";
+import {
+  Box,
+  Breadcrumbs,
+  Divider,
+  Grid,
+  Link,
+  Typography,
+  Skeleton,
+  Alert,
+  TextField,
+} from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CustomImage from "@/components/customImage/CustomImage";
@@ -14,8 +24,8 @@ import {
 } from "../../landing/components/ourProducts/types/typesProducts";
 import { RatingSummary } from "../types/typeProductDetail";
 import { useCartStore } from "@/store/cartStore";
-import { useAlertStore } from "@/store/alertStore";
 import { motion } from "framer-motion";
+import { useAlertStore } from "@/store/alertStore";
 
 const ProductsDetail = () => {
   const location = useLocation();
@@ -23,10 +33,15 @@ const ProductsDetail = () => {
   const idProduct = location?.state?.product?.id;
   const [idLocal, setIdLocal] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(1);
-  const { showAlert } = useAlertStore();
+
+  //QUALIFY
+  const [newComment, setNewComment] = useState("");
+  const [newRating, setNewRating] = useState<number>(5);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { listProduct, refetch, loading, error } = useProducts(idLocal || idProduct);
   const { addProduct } = useCartStore();
+  const { showAlert } = useAlertStore();
 
   useEffect(() => {
     window.scrollTo({
@@ -46,6 +61,28 @@ const ProductsDetail = () => {
     }
   }, [idLocal, idProduct, navigate, refetch]);
 
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+
+    setIsSubmitting(true);
+    try {
+      // Aquí integras tu llamada al backend:
+      // await postReview({ productId: idProduct, comment: newComment, rating: newRating });
+
+      console.log("Enviando:", { newComment, newRating });
+
+      // Limpiar formulario tras éxito
+      setNewComment("");
+      setNewRating(5);
+      // refetch(); // Para actualizar la lista de comentarios
+    } catch (err) {
+      console.error("Error al publicar comentario", err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleProductClick = useCallback(
     (product: ProductProps) => {
       setIdLocal(product.id);
@@ -60,11 +97,11 @@ const ProductsDetail = () => {
   const handleAddToCart = (product: ProductsData, qty: number = 1) => {
     if (qty === 0) {
       showAlert({
-        type: "error",
         title: "Error",
-        message: "No se puede agregar un producto con cantidad cero",
-        duration: 10000,
+        message: "La cantidad debe ser mayor a 0",
+        type: "error",
       });
+      return;
     }
     addProduct({
       id: product.id,
@@ -75,16 +112,11 @@ const ProductsDetail = () => {
       category: product.category,
       quantity: qty,
     });
-
     showAlert({
+      title: "Producto añadido",
+      message: "El producto ha sido añadido al carrito",
       type: "success",
-      title: "¡Logrado!",
-      message: `${product.name} se agregó al carrito correctamente`,
-      duration: 2000,
     });
-    if (navigator.vibrate) {
-      navigator.vibrate(50);
-    }
   };
 
   // Loading state
@@ -242,7 +274,7 @@ const ProductsDetail = () => {
             <Typography mb={1} className="size16 fontOnestSemiBold">
               {listProduct.reviews?.length || 0} Calificaciones
             </Typography>
-            <Califications value={listProduct.average_rating} size="small" />
+            <Califications value={listProduct.average_rating} size="small" readOnly />
             {listProduct.rating_summary?.map((rate: RatingSummary, index: number) => (
               <Box className="box-califications" key={rate.rating || index}>
                 <Typography className="size14">{rate.rating} Estrellas</Typography>
@@ -276,8 +308,122 @@ const ProductsDetail = () => {
                 No hay calificaciones disponibles
               </Typography>
             )}
+            <Divider sx={{ my: 4, opacity: 0.5 }} />
+
+            {/* FORMULARIO PARA AGREGAR COMENTARIO */}
+            <Box component="form" onSubmit={handleSubmitReview} className="form-review">
+              <Typography className="size18 fontOnestBold" mb={2}>
+                Deja tu opinión
+              </Typography>
+
+              <Box display="flex" alignItems="center" gap={2} mb={2}>
+                <Typography className="size14 fontOnest">Tu calificación:</Typography>
+                <Califications value={newRating} setValue={setNewRating} size="small" />
+              </Box>
+
+              <TextField
+                fullWidth
+                multiline
+                rows={3}
+                placeholder="Cuéntanos tu experiencia con este producto..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "15px",
+                    fontFamily: "Onest",
+                    backgroundColor: "var(--colorWhite)",
+                  },
+                }}
+              />
+
+              <MainButton
+                type="submit"
+                text={isSubmitting ? "Enviando..." : "Publicar comentario"}
+                className="btnRed"
+                sx={{ mt: 2, width: "100%" }}
+                disabled={isSubmitting || !newComment.trim()}
+              />
+            </Box>
           </Grid>
-          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 8 }} className="grid-califications"></Grid>
+          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 8 }} className="grid-reviews-list">
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+              {listProduct.reviews && listProduct.reviews.length > 0 ? (
+                listProduct.reviews.map((review: any, index: number) => (
+                  <Box
+                    key={review.id || index}
+                    component={motion.div}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    sx={{
+                      p: 3,
+                      borderRadius: "20px",
+                      bgcolor: "var(--colorWhite)",
+                      border: "1px solid var(--colorBlueLight)",
+                      transition: "all 0.3s ease",
+                      "&:hover": { boxShadow: "0 8px 20px rgba(0,0,0,0.04)" },
+                    }}
+                  >
+                    {/* HEADER DEL COMENTARIO */}
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1.5}>
+                      <Box display="flex" alignItems="center" gap={2}>
+                        <Box
+                          sx={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: "50%",
+                            bgcolor: "var(--colorBlueLight)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontWeight: "bold",
+                            fontSize: "14px",
+                            color: "var(--colorBlack)",
+                          }}
+                        >
+                          {review.user?.charAt(0)}
+                        </Box>
+                        <Box>
+                          <Typography className="size16 fontOnestBold">{review.user}</Typography>
+                          <Typography className="size12" sx={{ color: "text.secondary" }}>
+                            {new Date(review.created_at).toLocaleDateString("es-CO", {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            })}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      <Califications value={review.rating} size="small" readOnly />
+                    </Box>
+
+                    {/* CUERPO DEL COMENTARIO */}
+                    <Typography
+                      className="size14 fontOnest"
+                      sx={{ color: "var(--colorGrayDark)", lineHeight: 1.6 }}
+                    >
+                      “{review.comment}”
+                    </Typography>
+                  </Box>
+                ))
+              ) : (
+                <Box
+                  sx={{
+                    p: 4,
+                    textAlign: "center",
+                    bgcolor: "var(--colorBlueLight)",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <Typography className="size14 fontOnest" color="text.secondary">
+                    Este producto aún no tiene reseñas detalladas.
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          </Grid>
         </Grid>
       </Box>
 
