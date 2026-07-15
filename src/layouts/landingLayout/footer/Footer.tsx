@@ -47,7 +47,7 @@ const Footer = () => {
               <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                 <Box
                   className="contact-item"
-                  onClick={() => window.open("https://wa.me/573123456789")}
+                  onClick={() => window.open("https://wa.me/573059321550")}
                 >
                   <WhatsAppIcon className="icon" />
                   <Box>
@@ -58,7 +58,7 @@ const Footer = () => {
                       WhatsApp
                     </Typography>
                     <Typography className="size14 fontOnest" sx={{ color: "var(--colorWhite)" }}>
-                      +57 312 345 6789
+                      +57 305 932 1550
                     </Typography>
                   </Box>
                 </Box>
@@ -68,7 +68,7 @@ const Footer = () => {
               <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                 <Box
                   className="contact-item"
-                  onClick={() => (window.location.href = "mailto:uni-tiendas@gmail.com")}
+                  onClick={() => (window.location.href = "mailto:contacto@unitiendas.co")}
                 >
                   <EmailIcon className="icon" />
                   <Box>
@@ -79,7 +79,7 @@ const Footer = () => {
                       Correo
                     </Typography>
                     <Typography className="size14 fontOnest" sx={{ color: "var(--colorWhite)" }}>
-                      uni-tiendas@gmail.com
+                      contacto@unitiendas.co
                     </Typography>
                   </Box>
                 </Box>

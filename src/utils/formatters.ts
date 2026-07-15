@@ -16,6 +16,37 @@ export const convertSecondsToTime = (seconds: number) => {
   return { hours, minutes, secs };
 };
 
+// Formatea un valor numérico como peso colombiano: "$4.500" (sin decimales,
+// punto como separador de miles, como se ve en cualquier tienda en Colombia).
+export const formatCOP = (value: number | string | null | undefined): string => {
+  const num = Number(value ?? 0);
+  if (Number.isNaN(num)) return "$0";
+  return `$${Math.round(num).toLocaleString("es-CO")}`;
+};
+
+// Dado un precio normal y uno con descuento, devuelve el precio que
+// realmente se debe cobrar: el de descuento solo si existe y es menor.
+export const getEffectivePrice = (
+  normalPrice: number | string | null | undefined,
+  priceDiscount?: number | string | null | undefined
+): number => {
+  const normal = Number(normalPrice ?? 0);
+  const discount = Number(priceDiscount ?? 0);
+  if (discount > 0 && discount < normal) return discount;
+  return normal;
+};
+
+// True si hay un descuento real que valga la pena mostrar (precio con
+// descuento existe y es estrictamente menor al precio normal).
+export const hasRealDiscount = (
+  normalPrice: number | string | null | undefined,
+  priceDiscount?: number | string | null | undefined
+): boolean => {
+  const normal = Number(normalPrice ?? 0);
+  const discount = Number(priceDiscount ?? 0);
+  return discount > 0 && discount < normal;
+};
+
 export const formatFileSize = (bytes: number) => {
   if (bytes < 1024) return `${bytes} bytes`;
   else if (bytes < 1048576) return `${(bytes / 1024).toFixed(2)} KB`;

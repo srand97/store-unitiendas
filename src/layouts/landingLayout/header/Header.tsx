@@ -16,13 +16,14 @@ import { IconUser } from "@/assets/icon/IconUser";
 import { MainButton } from "@/components/mainButton/MainButton";
 import { useCartStore } from "@/store/cartStore";
 import { HamburgerIcon } from "@/components/hamburger/HamburgerIcon";
+import { formatCOP, getEffectivePrice } from "@/utils/formatters";
 
 // STYLES
 import "./header.scss";
 
 const Header = () => {
   const { isAuth, logout } = useAuthStore();
-  const { products, totalItems, totalPrice, removeProduct, updateQuantity } = useCartStore();
+  const { products, totalItems, finalTotal, removeProduct, updateQuantity } = useCartStore();
   const navigate = useNavigate();
   const location = useLocation();
   const home = "/inicio";
@@ -138,6 +139,12 @@ const Header = () => {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
+                <MainButton
+                  sx={{ color: "black", p: 1, display: "flex", width: "100%" }}
+                  className="size12"
+                  text="Mis pedidos"
+                  onClick={() => navigate("/mis-pedidos")}
+                />
                 <MainButton
                   sx={{ color: "black", p: 1 }}
                   className="size12"
@@ -400,7 +407,7 @@ const Header = () => {
                     {item.name}
                   </Typography>
                   <Typography fontSize={12} color="text.secondary">
-                    ${item?.normalPrice}
+                    {formatCOP(getEffectivePrice(item?.normalPrice, item?.priceDiscount))}
                   </Typography>
                   {/* Controles cantidad */}
                   <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mt: 0.5 }}>
@@ -427,7 +434,7 @@ const Header = () => {
                 {/* Subtotal + eliminar */}
                 <Box sx={{ textAlign: "right", flexShrink: 0 }}>
                   <Typography fontSize={13} fontWeight={700}>
-                    ${item?.normalPrice * item.quantity}
+                    {formatCOP(getEffectivePrice(item?.normalPrice, item?.priceDiscount) * item.quantity)}
                   </Typography>
                   <IconButton
                     size="small"
@@ -458,7 +465,7 @@ const Header = () => {
                 Total
               </Typography>
               <Typography fontSize={14} fontWeight={700} color="primary">
-                ${totalPrice()}
+                {formatCOP(finalTotal())}
               </Typography>
             </Box>
             <MainButton

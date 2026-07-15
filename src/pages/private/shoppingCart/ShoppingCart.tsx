@@ -1,18 +1,44 @@
 import { Box, Breadcrumbs, Link, Typography, Stack } from "@mui/material";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import PaymentForm from "./components/PaymentForm";
 import CartStep from "./components/CartStep";
 import SuccessStep from "./components/SuccessStep";
+import type { OrderResponse } from "./hook/useCheckout";
+import { useAuthStore } from "@/store/authStore";
+import { useAlertStore } from "@/store/alertStore";
 import "./shoppingCart.scss";
 
 const ShoppingCart = () => {
   const [step, setStep] = useState<number>(1);
   const [direction, setDirection] = useState(1); // 1 para adelante, -1 para atrás
+  const [order, setOrder] = useState<OrderResponse | null>(null);
+  const navigate = useNavigate();
+  const isAuth = useAuthStore((state) => state.isAuth);
+  const { showAlert } = useAlertStore();
 
-  const handleContinue = () => {
+  // Ir del Resumen (1) al paso de Entrega (2) requiere estar logueado,
+  // porque crear un pedido en el backend exige un usuario autenticado.
+  // El carrito en si sigue siendo visible para invitados.
+  const handleContinueFromCart = () => {
+    if (!isAuth) {
+      showAlert({
+        type: "info",
+        title: "Inicia sesión",
+        message: "Necesitas iniciar sesión para continuar con tu pedido.",
+      });
+      navigate("/inicio-sesion", { state: { from: "/carrito" } });
+      return;
+    }
     setDirection(1);
-    if (step < 3) setStep(step + 1);
+    setStep(2);
+  };
+
+  const handleOrderCreated = (createdOrder: OrderResponse) => {
+    setOrder(createdOrder);
+    setDirection(1);
+    setStep(3);
   };
 
   const handleBack = () => {
@@ -86,9 +112,9 @@ const ShoppingCart = () => {
             exit="exit"
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
-            {step === 1 && <CartStep onContinue={handleContinue} />}
-            {step === 2 && <PaymentForm onContinue={handleContinue} onBack={handleBack} />}
-            {step === 3 && <SuccessStep />}
+            {step === 1 && <CartStep onContinue={handleContinueFromCart} />}
+            {step === 2 && <PaymentForm onContinue={handleOrderCreated} onBack={handleBack} />}
+            {step === 3 && <SuccessStep order={order} />}
           </motion.div>
         </AnimatePresence>
       </Box>

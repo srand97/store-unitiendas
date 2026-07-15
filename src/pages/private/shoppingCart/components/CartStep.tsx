@@ -6,13 +6,14 @@ import { Box, Grid, IconButton, Typography, Divider, Stack } from "@mui/material
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
+import { formatCOP, getEffectivePrice, hasRealDiscount } from "@/utils/formatters";
 
 interface CartStepProps {
   onContinue: () => void;
 }
 
 const CartStep = ({ onContinue }: CartStepProps) => {
-  const { products, totalPrice, updateQuantity, removeProduct } = useCartStore();
+  const { products, totalPrice, finalTotal, updateQuantity, removeProduct } = useCartStore();
   const navigate = useNavigate();
 
   // Calculamos el descuento real basado en la diferencia de precios
@@ -83,14 +84,14 @@ const CartStep = ({ onContinue }: CartStepProps) => {
 
                     <Box display="flex" gap={1} alignItems="center" mt={1}>
                       <Typography className="size16 fontOnestBold">
-                        ${item.priceDiscount || item.normalPrice}
+                        {formatCOP(getEffectivePrice(item.normalPrice, item.priceDiscount))}
                       </Typography>
-                      {item.priceDiscount && (
+                      {hasRealDiscount(item.normalPrice, item.priceDiscount) && (
                         <Typography
                           className="size12"
                           sx={{ textDecoration: "line-through", color: "text.disabled" }}
                         >
-                          ${item.normalPrice}
+                          {formatCOP(item.normalPrice)}
                         </Typography>
                       )}
                     </Box>
@@ -123,13 +124,13 @@ const CartStep = ({ onContinue }: CartStepProps) => {
           <Stack spacing={2}>
             <Box display="flex" justifyContent="space-between">
               <Typography className="fontOnest">Subtotal</Typography>
-              <Typography className="fontOnestSemiBold">${totalPrice()}</Typography>
+              <Typography className="fontOnestSemiBold">{formatCOP(totalPrice())}</Typography>
             </Box>
 
             {totalSavings > 0 && (
               <Box display="flex" justifyContent="space-between" sx={{ color: "var(--colorRed)" }}>
                 <Typography className="fontOnest">Descuento aplicado</Typography>
-                <Typography className="fontOnestSemiBold">- ${totalSavings}</Typography>
+                <Typography className="fontOnestSemiBold">- {formatCOP(totalSavings)}</Typography>
               </Box>
             )}
 
@@ -145,7 +146,7 @@ const CartStep = ({ onContinue }: CartStepProps) => {
             <Box display="flex" justifyContent="space-between" alignItems="center">
               <Typography className="size18 fontOnestBold">Total</Typography>
               <Typography className="size22 fontOnestBold" color="var(--colorBlack)">
-                ${totalPrice() - totalSavings}
+                {formatCOP(finalTotal())}
               </Typography>
             </Box>
 

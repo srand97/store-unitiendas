@@ -8,4 +8,8 @@ export const ENDPOINTS = {
   },
   products: "products/client/category_products/",
   productById: "products/client/products/",
+  billings: {
+    createOrder: "billings/orders/",
+    myOrders: "billings/orders/mine/",
+  },
 };

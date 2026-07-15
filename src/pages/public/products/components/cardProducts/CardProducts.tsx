@@ -9,6 +9,7 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import CheckIcon from "@mui/icons-material/Check";
 import { useCartStore } from "@/store/cartStore";
+import { formatCOP, getEffectivePrice, hasRealDiscount } from "@/utils/formatters";
 
 interface ICardProduct {
   products: ProductsData;
@@ -64,11 +65,13 @@ const CardProducts = ({ products, onClickView, onClickAdd }: ICardProduct) => {
 
         <Box className="price-container">
           <Typography className="size18 fontOnestBold price-discount">
-            ${products?.unit_price_discount}
+            {formatCOP(getEffectivePrice(products?.normal_unit_price, products?.unit_price_discount))}
           </Typography>
-          <Typography className="size14 price-normal">
-            ${products?.normal_unit_price}
-          </Typography>
+          {hasRealDiscount(products?.normal_unit_price, products?.unit_price_discount) && (
+            <Typography className="size14 price-normal">
+              {formatCOP(products?.normal_unit_price)}
+            </Typography>
+          )}
         </Box>
       </Box>
 

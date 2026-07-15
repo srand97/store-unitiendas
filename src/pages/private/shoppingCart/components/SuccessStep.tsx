@@ -6,12 +6,16 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { MainButton } from "@/components/mainButton/MainButton";
 import { useCartStore } from "@/store/cartStore";
 import { useNavigate } from "react-router-dom";
+import type { OrderResponse } from "../hook/useCheckout";
+import { formatCOP } from "@/utils/formatters";
 
-const SuccessStep = () => {
-  const { products, totalPrice, clearCart } = useCartStore();
+interface SuccessStepProps {
+  order: OrderResponse | null;
+}
+
+const SuccessStep = ({ order }: SuccessStepProps) => {
+  const { clearCart } = useCartStore();
   const navigate = useNavigate();
-
-  const formatPrice = (price: number) => Math.round(price).toLocaleString("es-CO");
 
   useEffect(() => {
     // Disparamos el confeti al cargar el componente
@@ -39,12 +43,19 @@ const SuccessStep = () => {
       }
     };
     frame();
+
+    // El pedido ya quedo creado en el backend en este punto: limpiamos el
+    // carrito local para que no se pueda reenviar el mismo pedido si el
+    // usuario recarga o vuelve atras.
+    clearCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleFinish = (path: string) => {
-    clearCart();
     navigate(path);
   };
+
+  const isPickup = order?.fulfillment_method === "pickup";
 
   return (
     <Box
@@ -101,33 +112,21 @@ const SuccessStep = () => {
         <Box sx={{ bgcolor: "var(--colorBlueLight)", px: 4, py: 3 }}>
           <Typography className="size18 fontOnestBold">Resumen de tu pedido</Typography>
           <Typography className="size12" color="text.secondary">
-            ID del pedido: #UT-{Math.floor(Math.random() * 10000)}
+            ID del pedido: #{order?.code ?? "—"}
           </Typography>
         </Box>
 
         <Box sx={{ px: 4, py: 2, maxHeight: 300, overflowY: "auto" }}>
-          {products.map((product) => (
-            <Stack key={product.id} direction="row" spacing={2} py={2} alignItems="center">
-              <Box
-                component="img"
-                src={product.image}
-                alt={product.name}
-                sx={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: "12px",
-                  objectFit: "contain",
-                  bgcolor: "#f9f9f9",
-                }}
-              />
+          {order?.items.map((item) => (
+            <Stack key={item.id} direction="row" spacing={2} py={2} alignItems="center">
               <Box sx={{ flex: 1 }}>
-                <Typography className="size14 fontOnestSemiBold">{product.name}</Typography>
+                <Typography className="size14 fontOnestSemiBold">{item.product_name}</Typography>
                 <Typography className="size12" color="text.secondary">
-                  Cant: {product.quantity}
+                  Cant: {item.quantity}
                 </Typography>
               </Box>
               <Typography className="size14 fontOnestBold">
-                ${formatPrice(product.normalPrice * product.quantity)}
+                {formatCOP(item.subtotal)}
               </Typography>
             </Stack>
           ))}
@@ -137,15 +136,15 @@ const SuccessStep = () => {
 
         <Box sx={{ px: 4, py: 3, bgcolor: "rgba(255, 0, 0, 0.02)" }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography className="size18 fontOnestBold">Total pagado</Typography>
+            <Typography className="size18 fontOnestBold">Total a pagar</Typography>
             <Typography className="size24 fontOnestBold" color="var(--colorRed)">
-              ${formatPrice(totalPrice())}
+              {formatCOP(order?.total_amount)}
             </Typography>
           </Stack>
         </Box>
       </Box>
 
-      {/* INFO DE RECOGIDA */}
+      {/* INFO DE ENTREGA */}
       <Box
         sx={{
           mt: 4,
@@ -159,10 +158,19 @@ const SuccessStep = () => {
           alignItems: "center",
         }}
       >
-        <Typography fontSize={24}>📦</Typography>
+        <Typography fontSize={24}>{isPickup ? "📦" : "🛵"}</Typography>
         <Typography className="size14 fontOnest">
-          Recuerda que puedes recoger tu pedido en un máximo de <strong>5 días hábiles</strong>. Te
-          enviamos los detalles a tu correo.
+          {isPickup ? (
+            <>
+              Recuerda que puedes recoger tu pedido en un máximo de{" "}
+              <strong>5 días hábiles</strong>. Pago en efectivo al recogerlo.
+            </>
+          ) : (
+            <>
+              Tu pedido llegará a la dirección indicada. Ten el efectivo listo para pagar
+              contraentrega.
+            </>
+          )}
         </Typography>
       </Box>
 

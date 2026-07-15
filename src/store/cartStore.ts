@@ -22,6 +22,7 @@ interface CartStore {
   clearCart: () => void;
   totalItems: () => number;
   totalPrice: () => number;
+  finalTotal: () => number;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -63,7 +64,21 @@ export const useCartStore = create<CartStore>()(
 
       totalItems: () => get().products.length,
 
+      // Subtotal SIN descuento (precio normal x cantidad). Se usa como referencia
+      // para mostrar "Subtotal" antes de aplicar el descuento.
       totalPrice: () => get().products.reduce((acc, i) => acc + i.normalPrice * i.quantity, 0),
+
+      // Total real a cobrar: usa el precio con descuento cuando existe (y es > 0).
+      // IMPORTANTE: antes Header.tsx y SuccessStep.tsx usaban totalPrice() (sin
+      // descuento) como si fuera el total final, lo que mostraba un monto mayor
+      // al que realmente se cobra en el checkout. Usar finalTotal() en todos lados
+      // evita esa inconsistencia.
+      finalTotal: () =>
+        get().products.reduce((acc, i) => {
+          const effectivePrice =
+            i.priceDiscount && i.priceDiscount > 0 ? i.priceDiscount : i.normalPrice;
+          return acc + effectivePrice * i.quantity;
+        }, 0),
     }),
     {
       name: "cart-storage",

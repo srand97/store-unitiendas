@@ -26,6 +26,7 @@ import { RatingSummary } from "../types/typeProductDetail";
 import { useCartStore } from "@/store/cartStore";
 import { motion } from "framer-motion";
 import { useAlertStore } from "@/store/alertStore";
+import { formatCOP, getEffectivePrice, hasRealDiscount } from "@/utils/formatters";
 
 const ProductsDetail = () => {
   const location = useLocation();
@@ -220,14 +221,14 @@ const ProductsDetail = () => {
             {/* PRECIOS — subidos antes del counter para mejor lectura en mobile */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1.5, flexWrap: "wrap" }}>
               <Typography sx={{ color: "var(--colorBlack)" }} className="fontOnestBold size20">
-                ${listProduct.normal_unit_price}
+                {formatCOP(getEffectivePrice(listProduct.normal_unit_price, listProduct.unit_price_discount))}
               </Typography>
-              {listProduct.unit_price_discount && (
+              {hasRealDiscount(listProduct.normal_unit_price, listProduct.unit_price_discount) && (
                 <Typography
                   sx={{ color: "var(--colorGrayDark)", textDecoration: "line-through" }}
                   className="fontOnestSemiBold size16"
                 >
-                  ${listProduct.unit_price_discount}
+                  {formatCOP(listProduct.normal_unit_price)}
                 </Typography>
               )}
             </Box>
