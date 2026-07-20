@@ -26,7 +26,7 @@ export interface ApiResponse<T> {
   total_pages?: number | null;
   next?: string | null;
   errors?: string | Record<string, string[]> | null;
-  error?: string | Record<string, any>;
+  error?: string | Record<string, any> | null;
   // Detalles de validación específicos del backend
   error_details?: any;
 }
