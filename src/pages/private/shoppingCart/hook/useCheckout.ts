@@ -59,8 +59,6 @@ export const useCheckout = () => {
         isLoading: true,
         body: {
           ...values,
-          // El precio NUNCA se envia: el backend lo recalcula desde el
-          // producto para que nadie pueda manipular el total del pedido.
           items: products.map((p) => ({ product: p.id, quantity: p.quantity })),
         },
       });
@@ -72,16 +70,24 @@ export const useCheckout = () => {
           message: response?.message || "Intenta nuevamente.",
           duration: 8000,
         });
+        // Asegurar que el error no sea null
+        if (response && response.error === null) {
+          response.error = undefined;
+        }
+        return response;
       }
 
       return response;
     } catch (error) {
+      const errorMessage = typeof error === "string" ? error : "Error desconocido al crear el pedido.";
       showAlert({
         type: "error",
         title: "Error",
-        message: (error as string) || "Error desconocido al crear el pedido.",
+        message: errorMessage,
         duration: 8000,
       });
+      // Retornar undefined en caso de error
+      return undefined;
     }
   };
 
